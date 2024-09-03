@@ -4,11 +4,11 @@ public interface TodoService {
 
     TodoResponse getAllTodos();
 
-    TodoResponse getTodoById(int todoId);
+    TodoDto getTodoById(long todoId);
 
-    TodoResponse addTodo(TodoDto todoDto);
+    TodoDto addTodo(TodoDto todoDto);
 
-    TodoResponse updateTodo(int todoId, TodoDto todoDto);
+    TodoDto updateTodo(long todoId, TodoDto todoDto);
 
-    TodoResponse deleteTodo(int todoId);
+    TodoDto deleteTodo(long todoId);
 }

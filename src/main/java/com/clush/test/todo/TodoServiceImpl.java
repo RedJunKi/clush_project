@@ -1,29 +1,69 @@
 package com.clush.test.todo;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Transactional
+@Service
+@RequiredArgsConstructor
 public class TodoServiceImpl implements TodoService {
+
+    @Autowired
+    private final TodoRepository todoRepository;
 
     @Override
     public TodoResponse getAllTodos() {
-        return null;
+        List<Todo> todos = todoRepository.findAll();
+
+        List<TodoDto> todoDtos = todos.stream()
+                .map(Todo::entityToDto)
+                .toList();
+
+        return new TodoResponse(todoDtos);
     }
 
     @Override
-    public TodoResponse getTodoById(int todoId) {
-        return null;
+    public TodoDto getTodoById(long todoId) {
+        Todo result = findById(todoId);
+
+        return result.entityToDto();
     }
 
     @Override
-    public TodoResponse addTodo(TodoDto todoDto) {
-        return null;
+    public TodoDto addTodo(TodoDto todoDto) {
+
+        Todo todo = new Todo(todoDto.getTitle(), todoDto.getDescription());
+        Todo result = todoRepository.save(todo);
+
+        return result.entityToDto();
     }
 
     @Override
-    public TodoResponse updateTodo(int todoId, TodoDto todoDto) {
-        return null;
+    public TodoDto updateTodo(long todoId, TodoDto todoDto) {
+        Todo todo = findById(todoId);
+        todo.setTitle(todoDto.getTitle());
+        todo.setDescription(todoDto.getDescription());
+        todo.setStatus(todoDto.getStatus());
+
+        todoRepository.save(todo);
+
+        return todo.entityToDto();
     }
 
     @Override
-    public TodoResponse deleteTodo(int todoId) {
-        return null;
+    public TodoDto deleteTodo(long todoId) {
+        Todo todo = findById(todoId);
+        todoRepository.delete(todo);
+        return todo.entityToDto();
+    }
+
+    private Todo findById(long todoId) {
+        Todo result = todoRepository.findById(todoId)
+                .orElseThrow(() -> new IllegalArgumentException("찾을수 없는 아이디입니다."));
+        return result;
     }
 }
