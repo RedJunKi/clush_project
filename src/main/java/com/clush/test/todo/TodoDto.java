@@ -9,6 +9,12 @@ public class TodoDto {
     private String description;
     private TodoStatus status;
 
+    public TodoDto(String title, String description, TodoStatus status) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
+    }
+
     public String getTitle() {
         return title;
     }

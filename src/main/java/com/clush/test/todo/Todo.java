@@ -2,8 +2,10 @@ package com.clush.test.todo;
 
 import com.clush.test.common.BaseEntity;
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 public class Todo extends BaseEntity {
 
     @Id
@@ -35,6 +37,14 @@ public class Todo extends BaseEntity {
 
     public void setStatus(TodoStatus status) {
         this.status = status;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public TodoDto entityToDto() {

@@ -1,6 +1,7 @@
 package com.clush.test.todo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/todos")
 @RequiredArgsConstructor
+@Slf4j
 public class TodoController {
 
     @Autowired
@@ -16,7 +18,6 @@ public class TodoController {
     @GetMapping
     public ResponseEntity<TodoResponse> getAllTodos() {
         TodoResponse todos = todoService.getAllTodos();
-
         return ResponseEntity.ok(todos);
     }
 

@@ -1,6 +1,7 @@
 package com.clush.test.todo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import java.util.List;
 @Transactional
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TodoServiceImpl implements TodoService {
 
     @Autowired
@@ -62,8 +64,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     private Todo findById(long todoId) {
-        Todo result = todoRepository.findById(todoId)
+        return todoRepository.findById(todoId)
                 .orElseThrow(() -> new IllegalArgumentException("찾을수 없는 아이디입니다."));
-        return result;
     }
 }

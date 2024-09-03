@@ -9,4 +9,8 @@ public class TodoResponse {
     public TodoResponse(List<TodoDto> todos) {
         this.todos = todos;
     }
+
+    public List<TodoDto> getTodos() {
+        return todos;
+    }
 }
