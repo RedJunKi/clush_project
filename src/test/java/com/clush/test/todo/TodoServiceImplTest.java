@@ -22,9 +22,6 @@ class TodoServiceImplTest {
     @Autowired
     TodoService todoService;
 
-    @Autowired
-    TodoRepository todoRepository;
-
     private Todo savedTodo;
 
     @BeforeEach
