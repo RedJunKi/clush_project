@@ -10,7 +10,7 @@ public class Todo extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ITEM_ID")
+    @Column(name = "TODO_ID")
     private long id;
 
     private String title;
@@ -18,13 +18,11 @@ public class Todo extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private TodoStatus status;
-    private boolean cancelYn;
 
     public Todo(String title, String description) {
         this.title = title;
         this.description = description;
         this.status = TodoStatus.PENDING;
-        this.cancelYn = false;
     }
 
     public void setTitle(String title) {
@@ -49,6 +47,7 @@ public class Todo extends BaseEntity {
 
     public TodoDto entityToDto() {
         return TodoDto.builder()
+                .id(this.id)
                 .title(this.title)
                 .description(this.description)
                 .status(this.status)

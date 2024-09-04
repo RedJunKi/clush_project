@@ -1,0 +1,169 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    width: 80%;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 24px;
+    transform: rotate(-20deg);
+    position: relative;
+    left: 10px;
+}
+
+header button {
+    background-color: #00bfff;
+    color: white;
+    border: 1px solid gray;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+main {
+    display: flex;
+    justify-content: space-between;
+}
+
+.column {
+    width: 30%;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.column h2 {
+    text-align: center;
+}
+
+.card {
+    background-color: #d9edf7;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    position: relative;
+    align-items: center;
+}
+
+.card h3 {
+    margin: 0;
+    font-size: 14px;
+}
+
+.card p {
+    margin: 5px 0;
+}
+
+.card .arrow {
+    background-color: rgb(193, 193, 193);
+    border: 1px solid gray;
+    font-size: 16px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position : absolute;
+}
+
+.card .complete {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+    position: absolute;
+    bottom: 20px;
+    right : 5%
+}
+
+.card .arrow.right {
+    margin-top: -40px;
+    margin-left: 285px;
+}
+
+.card .arrow.left {
+    margin-top: -40px;
+    margin-left: 250px;
+}
+
+
+#todo-post-main {
+    width: 80%;
+    max-width: 600px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+}
+
+form h4 {
+    margin-top: 0;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form input[type="radio"] {
+    margin-right: 5px;
+}
+
+form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+form button[type="reset"] {
+    background-color: #6c757d;
+}
+
+form button[type="reset"]:hover {
+    background-color: #5a6268;
+}
+
+form button#backButton {
+    background-color: #28a745;
+}
+
+form button#backButton:hover {
+    background-color: #218838;
+}

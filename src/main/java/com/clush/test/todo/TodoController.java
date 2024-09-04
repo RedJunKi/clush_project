@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/todos")
+@RequestMapping("/api/todos")
 @RequiredArgsConstructor
 @Slf4j
 public class TodoController {
@@ -37,6 +37,12 @@ public class TodoController {
     @PutMapping("/{todoId}")
     public ResponseEntity<TodoDto> updateTodo(@PathVariable long todoId, @RequestBody TodoDto todoDto) {
         TodoDto todo = todoService.updateTodo(todoId, todoDto);
+        return ResponseEntity.ok(todo);
+    }
+
+    @PutMapping("/{todoId}/status")
+    public ResponseEntity<TodoDto> updateTodoStatus(@PathVariable long todoId, @RequestBody TodoStatus status) {
+        TodoDto todo = todoService.updateTodoStatus(todoId, status);
         return ResponseEntity.ok(todo);
     }
 
