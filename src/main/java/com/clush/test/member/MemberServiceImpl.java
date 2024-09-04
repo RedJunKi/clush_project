@@ -1,4 +1,70 @@
 package com.clush.test.member;
 
+import com.clush.test.role.Role;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
 public class MemberServiceImpl {
+
+    private final MemberRepository memberRepository;
+
+    public MemberPostDto save(MemberPostDto memberPostDto) {
+        ValidateDuplicateEmail(memberPostDto.getEmail());
+
+
+        Member member = createMemberFromMemberPostDto(memberPostDto);
+        setRole(member);
+
+        Member result = memberRepository.save(member);
+        return result.entityToDto();
+    }
+
+    private void setRole(Member member) {
+        Role role = roleRepository.findByRoleStatus(RoleStatus.ROLE_USER);
+        member.addRoles(role);
+    }
+
+    private void ValidateDuplicateEmail(String email) {
+        if (memberRepository.findByEmail(email).isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_DUPLICATE);
+        }
+    }
+
+    public MemberPostDto update(Long memberId, MemberPostDto memberPostDto) {
+        Member member = createMemberFromMemberPostDto(memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND)), memberPostDto);
+
+        return member.entityToDto();
+    }
+
+    public MemberPostDto delete(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        memberRepository.delete(member);
+
+        return member.entityToDto();
+    }
+
+    public Member login(MemberLoginDto memberLoginDto) {
+        String email = memberLoginDto.getEmail();
+        String password = memberLoginDto.getPassword();
+
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+
+        if (!passwordEncoder.matches(password, member.getPassword())) {
+            throw new BusinessLogicException(ExceptionCode.PASSWORD_MISMATCH);
+        }
+
+        return member;
+    }
+
+
+    private Member createMemberFromMemberPostDto(MemberPostDto memberPostDto) {
+        return new Member(memberPostDto.getEmail(), memberPostDto.getPassword(), memberPostDto.getUsername());
+    }
 }

@@ -33,5 +33,17 @@ public class Member extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    public Member(String email, String password, String username) {
+        this.email = email;
+        this.password = password;
+        this.username = username;
+    }
 
+    public MemberPostDto entityToDto() {
+        return new MemberPostDto(this.id, this.email, this.username, this.password);
+    }
+
+    public void addRoles(Role role) {
+        this.roles.add(role);
+    }
 }
