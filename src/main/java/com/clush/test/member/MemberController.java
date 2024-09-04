@@ -1,6 +1,8 @@
 package com.clush.test.member;
 
 import com.clush.test.role.Role;
+import com.clush.test.security.token.TokenResponseDto;
+import com.clush.test.security.util.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final JwtTokenizer jwtTokenizer;
 
     @PostMapping
     public ResponseEntity<MemberPostDto> saveUser(@RequestBody MemberPostDto memberPostDto) {
@@ -26,7 +29,7 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<TokenResponseDto> login(@Validated @RequestBody MemberLoginDto memberLoginDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         Member member = memberService.login(memberLoginDto);

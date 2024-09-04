@@ -50,4 +50,12 @@ public class Member extends BaseEntity {
     public Set<Role> getRoles() {
         return roles;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }
