@@ -20,7 +20,7 @@ public class CalendarEvent extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CALENDAR_EVENT_ID")
-    private long id;
+    private Long id;
     private String title;
     private String description;
     @Column(name = "START_DATE")

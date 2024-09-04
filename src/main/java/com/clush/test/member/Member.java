@@ -46,4 +46,8 @@ public class Member extends BaseEntity {
     public void addRoles(Role role) {
         this.roles.add(role);
     }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
 }

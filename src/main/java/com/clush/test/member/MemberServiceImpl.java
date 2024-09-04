@@ -1,6 +1,8 @@
 package com.clush.test.member;
 
 import com.clush.test.role.Role;
+import com.clush.test.role.RoleRepository;
+import com.clush.test.role.RoleStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberServiceImpl {
 
     private final MemberRepository memberRepository;
+    private final RoleRepository roleRepository;
 
     public MemberPostDto save(MemberPostDto memberPostDto) {
         ValidateDuplicateEmail(memberPostDto.getEmail());
