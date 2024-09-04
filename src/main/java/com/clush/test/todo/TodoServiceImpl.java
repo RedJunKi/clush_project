@@ -1,5 +1,9 @@
 package com.clush.test.todo;
 
+import com.clush.test.global.BusinessLogicException;
+import com.clush.test.global.ExceptionCode;
+import com.clush.test.member.Member;
+import com.clush.test.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,7 @@ import java.util.List;
 public class TodoServiceImpl implements TodoService {
 
     private final TodoRepository todoRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public TodoResponse getAllTodos() {
@@ -35,9 +40,11 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public TodoDto addTodo(TodoDto todoDto) {
+    public TodoDto addTodo(TodoDto todoDto, Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
-        Todo todo = new Todo(todoDto.getTitle(), todoDto.getDescription());
+        Todo todo = new Todo(todoDto.getTitle(), todoDto.getDescription(), member);
         Todo result = todoRepository.save(todo);
 
         return result.entityToDto();

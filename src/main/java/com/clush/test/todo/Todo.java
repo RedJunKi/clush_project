@@ -23,9 +23,10 @@ public class Todo extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private TodoStatus status;
 
-    public Todo(String title, String description) {
+    public Todo(String title, String description, Member member) {
         this.title = title;
         this.description = description;
+        this.member = member;
         this.status = TodoStatus.PENDING;
     }
 

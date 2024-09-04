@@ -1,5 +1,9 @@
 package com.clush.test.todo;
 
+import com.clush.test.member.Member;
+import com.clush.test.member.MemberPostDto;
+import com.clush.test.member.MemberRepository;
+import com.clush.test.member.MemberService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
@@ -20,6 +24,9 @@ class TodoServiceImplTest {
 
     @Autowired
     TodoService todoService;
+
+    @Autowired
+    MemberRepository memberRepository;
 
     private Todo savedTodo;
 
@@ -58,7 +65,7 @@ class TodoServiceImplTest {
         TodoDto todoDto = new TodoDto("생성", "테스트", TodoStatus.PENDING);
 
         //when
-        TodoDto result = todoService.addTodo(todoDto);
+        TodoDto result = todoService.addTodo(todoDto, 1L);
 
         //then
         assertThat(result.getTitle()).isEqualTo(todoDto.getTitle());
@@ -72,7 +79,7 @@ class TodoServiceImplTest {
         TodoDto todoDto = new TodoDto("수정본", "수정", TodoStatus.COMPLETED);
 
         //when
-        TodoDto updateTodo = todoService.updateTodo(1L, todoDto);
+        TodoDto updateTodo = todoService.updateTodo(savedTodo.getId(), todoDto);
 
         //then
         assertThat(updateTodo.getTitle()).isEqualTo(todoDto.getTitle());
@@ -95,7 +102,9 @@ class TodoServiceImplTest {
     }
 
     private Todo createTodo() {
-        Todo todo = new Todo("제목", "내용");
+        Member member = new Member(1L, "email@naver.com", "username", "password");
+        Member save = memberRepository.save(member);
+        Todo todo = new Todo("제목", "내용", save);
         em.persist(todo);
         em.flush();
         return todo;

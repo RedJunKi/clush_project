@@ -1,5 +1,6 @@
 package com.clush.test.todo;
 
+import com.clush.test.security.util.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class TodoController {
 
     private final TodoService todoService;
+    private final JwtTokenizer jwtTokenizer;
 
     @GetMapping
     public ResponseEntity<TodoResponse> getAllTodos() {
@@ -26,8 +28,9 @@ public class TodoController {
     }
 
     @PostMapping
-    public ResponseEntity<TodoDto> addTodo(@RequestBody TodoDto todoDto) {
-        TodoDto todo = todoService.addTodo(todoDto);
+    public ResponseEntity<TodoDto> addTodo(@RequestBody TodoDto todoDto, @RequestHeader("Authorization") String token) {
+        Long memberId = jwtTokenizer.getMemberIdFromToken(token);
+        TodoDto todo = todoService.addTodo(todoDto, memberId);
 
         return ResponseEntity.ok(todo);
     }

@@ -41,6 +41,13 @@ public class Member extends BaseEntity {
         this.username = username;
     }
 
+    public Member(long id, String email, String password, String username) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.username = username;
+    }
+
     public MemberPostDto entityToDto() {
         return new MemberPostDto(this.id, this.email, this.username, this.password);
     }

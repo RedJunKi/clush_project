@@ -14,6 +14,12 @@ public class MemberPostDto {
         this.password = password;
     }
 
+    public MemberPostDto(String email, String username, String password) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
+    }
+
     public String getEmail() {
         return email;
     }

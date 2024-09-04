@@ -6,7 +6,7 @@ public interface TodoService {
 
     TodoDto getTodoById(long todoId);
 
-    TodoDto addTodo(TodoDto todoDto);
+    TodoDto addTodo(TodoDto todoDto, Long memberId);
 
     TodoDto updateTodo(long todoId, TodoDto todoDto);
 
