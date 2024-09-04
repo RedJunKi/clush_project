@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight requests should be allowed without authentication
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers("/signup", "/login", "/users/refresh", "/users/**").permitAll()
 //                        .anyRequest().authenticated()
                                 .anyRequest().permitAll()

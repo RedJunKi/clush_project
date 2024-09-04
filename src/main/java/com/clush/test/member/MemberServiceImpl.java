@@ -1,5 +1,7 @@
 package com.clush.test.member;
 
+import com.clush.test.global.BusinessLogicException;
+import com.clush.test.global.ExceptionCode;
 import com.clush.test.role.Role;
 import com.clush.test.role.RoleRepository;
 import com.clush.test.role.RoleStatus;
@@ -21,7 +23,7 @@ public class MemberServiceImpl {
         ValidateDuplicateEmail(memberPostDto.getEmail());
 
 
-        Member member = createMemberFromMemberPostDto(memberPostDto);
+        Member member = createMemberFromMemberPostDto(null, memberPostDto);
         setRole(member);
 
         Member result = memberRepository.save(member);
@@ -69,7 +71,15 @@ public class MemberServiceImpl {
     }
 
 
-    private Member createMemberFromMemberPostDto(MemberPostDto memberPostDto) {
-        return new Member(memberPostDto.getEmail(), memberPostDto.getPassword(), memberPostDto.getUsername());
+    private Member createMemberFromMemberPostDto(Member member, MemberPostDto memberPostDto) {
+        if (member == null) {
+            return new Member(memberPostDto.getEmail(), memberPostDto.getPassword(), memberPostDto.getUsername());
+        }
+
+        member.setEmail(memberPostDto.getEmail());
+        member.setPassword(memberPostDto.getPassword());
+        member.setUsername(memberPostDto.getUsername());
+
+        return member;
     }
 }
