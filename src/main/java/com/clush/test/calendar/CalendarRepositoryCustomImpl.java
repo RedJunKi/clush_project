@@ -14,7 +14,6 @@ import static com.clush.test.calendar.QCalendarEvent.calendarEvent;
 @RequiredArgsConstructor
 public class CalendarRepositoryCustomImpl implements CalendarRepositoryCustom {
 
-    @Autowired
     private final JPAQueryFactory queryFactory;
 
     @Override

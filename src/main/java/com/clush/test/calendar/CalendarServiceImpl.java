@@ -13,7 +13,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CalendarServiceImpl implements CalendarService {
 
-    @Autowired
     private final CalendarRepository calendarRepository;
 
     @Override

@@ -15,7 +15,6 @@ import java.util.Date;
 @Slf4j
 public class CalendarController {
 
-    @Autowired
     private final CalendarService calendarService;
 
     @GetMapping

@@ -14,7 +14,6 @@ import java.util.List;
 @Slf4j
 public class TodoServiceImpl implements TodoService {
 
-    @Autowired
     private final TodoRepository todoRepository;
 
     @Override

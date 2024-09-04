@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class TodoController {
 
-    @Autowired
     private final TodoService todoService;
 
     @GetMapping
