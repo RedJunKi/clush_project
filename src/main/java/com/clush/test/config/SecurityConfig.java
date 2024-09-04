@@ -20,11 +20,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    public SecurityConfig(JwtAuthenticationProvider jwtAuthenticationProvider, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
+        this.jwtAuthenticationProvider = jwtAuthenticationProvider;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -35,12 +39,14 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .formLogin(AbstractHttpConfigurer::disable)
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .requestMatchers("/signup", "/login", "/users/refresh", "/users/**").permitAll()
-//                        .anyRequest().authenticated()
+                                .requestMatchers("/signup", "/login").permitAll()
+//                                .anyRequest().authenticated()
                                 .anyRequest().permitAll()
                 )
                 .exceptionHandling(exception -> exception

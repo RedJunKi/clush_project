@@ -1,6 +1,7 @@
 package com.clush.test.calendar;
 
 import com.clush.test.common.BaseEntity;
+import com.clush.test.member.Member;
 import com.clush.test.todo.TodoDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,9 +24,12 @@ public class CalendarEvent extends BaseEntity {
     private Long id;
     private String title;
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Member member;
+
     @Column(name = "START_DATE")
     private LocalDateTime startDate;
-
     @Column(name = "END_DATE")
     private LocalDateTime endDate;
 

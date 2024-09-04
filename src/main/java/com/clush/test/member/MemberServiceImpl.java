@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberServiceImpl {
+public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final RoleRepository roleRepository;
@@ -73,11 +73,11 @@ public class MemberServiceImpl {
 
     private Member createMemberFromMemberPostDto(Member member, MemberPostDto memberPostDto) {
         if (member == null) {
-            return new Member(memberPostDto.getEmail(), memberPostDto.getPassword(), memberPostDto.getUsername());
+            return new Member(memberPostDto.getEmail(), passwordEncoder.encode(memberPostDto.getPassword()), memberPostDto.getUsername());
         }
 
         member.setEmail(memberPostDto.getEmail());
-        member.setPassword(memberPostDto.getPassword());
+        member.setPassword(passwordEncoder.encode(memberPostDto.getPassword()));
         member.setUsername(memberPostDto.getUsername());
 
         return member;

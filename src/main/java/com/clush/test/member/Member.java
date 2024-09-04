@@ -5,6 +5,7 @@ import com.clush.test.common.BaseEntity;
 import com.clush.test.role.Role;
 import com.clush.test.todo.Todo;
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@NoArgsConstructor
 public class Member extends BaseEntity {
 
     @Id

@@ -1,6 +1,7 @@
 package com.clush.test.todo;
 
 import com.clush.test.common.BaseEntity;
+import com.clush.test.member.Member;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,9 @@ public class Todo extends BaseEntity {
 
     private String title;
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Member member;
 
     @Enumerated(EnumType.STRING)
     private TodoStatus status;

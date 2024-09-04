@@ -3,7 +3,10 @@ package com.clush.test.member;
 import com.clush.test.role.Role;
 import com.clush.test.security.token.TokenResponseDto;
 import com.clush.test.security.util.JwtTokenizer;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -14,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/members")
+@RequestMapping("/api/members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -27,7 +30,7 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponseDto> login(@Validated @RequestBody MemberLoginDto memberLoginDto, BindingResult bindingResult) {
+    public ResponseEntity<?> login(@Validated @RequestBody MemberLoginDto memberLoginDto, BindingResult bindingResult, HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -42,11 +45,15 @@ public class MemberController {
         String accessToken = jwtTokenizer.createAccessToken(member.getId(), member.getEmail(), roles);
         String refreshToken = jwtTokenizer.createRefreshToken(member.getId(), member.getEmail(), roles);
 
-        TokenResponseDto result = new TokenResponseDto();
-        result.setAccessToken(accessToken);
-        result.setRefreshToken(refreshToken);
+        response.setHeader("Authorization", "Bearer " + accessToken);
 
-        return ResponseEntity.ok(result);
+        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60);
+        response.addCookie(refreshTokenCookie);
+
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{memberId}")
