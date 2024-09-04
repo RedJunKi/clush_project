@@ -3,7 +3,9 @@ package com.clush.test.calendar;
 import com.clush.test.common.BaseEntity;
 import com.clush.test.todo.TodoDto;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class CalendarEvent extends BaseEntity {
 
     @Id
@@ -25,6 +28,13 @@ public class CalendarEvent extends BaseEntity {
 
     @Column(name = "END_DATE")
     private LocalDateTime endDate;
+
+    public CalendarEvent(String title, String description, LocalDateTime startDate, LocalDateTime endDate) {
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
     public CalendarEventDto entityToDto() {
         return CalendarEventDto.builder()

@@ -2,7 +2,7 @@ package com.clush.test.todo;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.assertj.core.api.Assertions;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -70,7 +69,6 @@ class TodoServiceImplTest {
     void updateTodo() {
         //given
         // id = 1
-        Todo todo = createTodo();
         TodoDto todoDto = new TodoDto("수정본", "수정", TodoStatus.COMPLETED);
 
         //when

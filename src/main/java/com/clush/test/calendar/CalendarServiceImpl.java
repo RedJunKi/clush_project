@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Transactional
@@ -39,10 +38,7 @@ public class CalendarServiceImpl implements CalendarService {
     public CalendarEventDto addEvent(CalendarEventDto eventDto) {
         CalendarEvent calendarEvent = new CalendarEvent();
 
-        calendarEvent.setTitle(eventDto.getTitle());
-        calendarEvent.setDescription(eventDto.getDescription());
-        calendarEvent.setStartDate(eventDto.getStartDate());
-        calendarEvent.setEndDate(eventDto.getEndDate());
+        makeEventEntity(eventDto, calendarEvent);
 
         CalendarEvent result = calendarRepository.save(calendarEvent);
         return result.entityToDto();
@@ -52,10 +48,7 @@ public class CalendarServiceImpl implements CalendarService {
     public CalendarEventDto updateEvent(long eventId, CalendarEventDto eventDto) {
         CalendarEvent calendarEvent = findById(eventId);
 
-        calendarEvent.setTitle(eventDto.getTitle());
-        calendarEvent.setDescription(eventDto.getDescription());
-        calendarEvent.setStartDate(eventDto.getStartDate());
-        calendarEvent.setEndDate(eventDto.getEndDate());
+        makeEventEntity(eventDto, calendarEvent);
 
         CalendarEvent result = calendarRepository.save(calendarEvent);
         return result.entityToDto();
@@ -70,6 +63,14 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     private CalendarEvent findById(long eventId) {
-        return calendarRepository.findById(eventId).orElseThrow(() -> new IllegalArgumentException("해당 아이디를 찾을 수 없습니다."));
+        return calendarRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 아이디를 찾을 수 없습니다."));
+    }
+
+    private static void makeEventEntity(CalendarEventDto eventDto, CalendarEvent calendarEvent) {
+        calendarEvent.setTitle(eventDto.getTitle());
+        calendarEvent.setDescription(eventDto.getDescription());
+        calendarEvent.setStartDate(eventDto.getStartDate());
+        calendarEvent.setEndDate(eventDto.getEndDate());
     }
 }
