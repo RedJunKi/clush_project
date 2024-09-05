@@ -2,109 +2,140 @@ package com.clush.test.todo;
 
 import com.clush.test.member.Member;
 import com.clush.test.member.MemberRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.util.List;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @Transactional
 class TodoServiceImplTest {
 
-    @PersistenceContext
-    EntityManager em;
+    @Autowired
+    private TodoServiceImpl todoService;
 
     @Autowired
-    TodoService todoService;
+    private TodoRepository todoRepository;
 
     @Autowired
-    MemberRepository memberRepository;
+    private MemberRepository memberRepository;
 
-    private Todo savedTodo;
+    private Member testMember;
+    private Todo testTodo;
 
-//    @BeforeEach
-//    void setUp() {
-//        savedTodo = createTodo();
-//    }
-//
-//    @Test
-//    void getAllTodos() {
-//        //given
-//        TodoResponse result = todoService.getAllTodos(1L);
-//
-//        //when
-//
-//
-//        //then
-//        assertThat(result.getTodos().size()).isGreaterThanOrEqualTo(1);
-//
-//    }
-//
-//    @Test
-//    void getTodoById() {
-//        //given
-//        //when
-//        TodoDto result = todoService.getTodoById(savedTodo.getId(), memberId);
-//
-//        //then
-//        assertThat(result).isNotNull();
-//        assertThat(result.getTitle()).isEqualTo(savedTodo.getTitle());
-//    }
-//
-//    @Test
-//    void addTodo() {
-//        //given
-//        TodoDto todoDto = new TodoDto("생성", "테스트", TodoStatus.PENDING);
-//
-//        //when
-//        TodoDto result = todoService.addTodo(todoDto, 1L);
-//
-//        //then
-//        assertThat(result.getTitle()).isEqualTo(todoDto.getTitle());
-//        assertThat(result.getStatus()).isEqualTo(TodoStatus.PENDING);
-//    }
-//
-//    @Test
-//    void updateTodo() {
-//        //given
-//        // id = 1
-//        TodoDto todoDto = new TodoDto("수정본", "수정", TodoStatus.COMPLETED);
-//
-//        //when
-//        TodoDto updateTodo = todoService.updateTodo(savedTodo.getId(), todoDto, memberId);
-//
-//        //then
-//        assertThat(updateTodo.getTitle()).isEqualTo(todoDto.getTitle());
-//        assertThat(updateTodo.getStatus()).isEqualTo(todoDto.getStatus());
-//
-//        TodoDto repeatedUpdate = todoService.updateTodo(savedTodo.getId(), todoDto, memberId);
-//        assertThat(repeatedUpdate.getTitle()).isEqualTo(todoDto.getTitle());
-//        assertThat(repeatedUpdate.getStatus()).isEqualTo(todoDto.getStatus());
-//    }
-//
-//    @Test
-//    void deleteTodo() {
-//        //given
-//        //when
-//        todoService.deleteTodo(savedTodo.getId());
-//
-//        //then
-//        assertThatThrownBy(() -> todoService.getTodoById(savedTodo.getId(), memberId)).isInstanceOf(IllegalArgumentException.class);
-//        assertThatThrownBy(() -> todoService.deleteTodo(savedTodo.getId())).isInstanceOf(IllegalArgumentException.class);
-//    }
-//
-//    private Todo createTodo() {
-//        Member member = new Member(1L, "email@naver.com", "username", "password");
-//        Member save = memberRepository.save(member);
-//        Todo todo = new Todo("제목", "내용", save);
-//        em.persist(todo);
-//        em.flush();
-//        return todo;
-//    }
+    @BeforeEach
+    void setUp() {
+        // 회원 생성 및 저장
+        testMember = new Member();
+        testMember.setEmail("testuser@example.com");
+        testMember.setUsername("TestUser");
+        testMember.setPassword("password");
+
+        memberRepository.save(testMember);
+
+        // Todo 생성 및 저장
+        testTodo = new Todo();
+        testTodo.setTitle("Initial Title");
+        testTodo.setDescription("Initial Description");
+        testTodo.setMember(testMember);
+
+        todoRepository.save(testTodo);
+    }
+
+    @Test
+    void testGetAllTodos() {
+        // when
+        TodoResponse result = todoService.getAllTodos(testMember.getId());
+
+        // then
+        assertThat(result.getTodos()).isNotEmpty();
+        assertThat(result.getTodos().get(0).getTitle()).isEqualTo(testTodo.getTitle());
+    }
+
+    @Test
+    void testGetTodoById() {
+        // when
+        TodoDto result = todoService.getTodoById(testTodo.getId(), testMember.getId());
+
+        // then
+        assertThat(result.getTitle()).isEqualTo(testTodo.getTitle());
+        assertThat(result.getDescription()).isEqualTo(testTodo.getDescription());
+    }
+
+    @Test
+    void testAddTodo() {
+        // given
+        TodoDto newTodo = new TodoDto("New Title", "New Description");
+
+        // when
+        TodoDto result = todoService.addTodo(newTodo, testMember.getId());
+
+        // then
+        assertThat(result.getTitle()).isEqualTo("New Title");
+        assertThat(result.getDescription()).isEqualTo("New Description");
+
+        // DB에 추가된 Todo가 있는지 확인
+        List<Todo> todos = todoRepository.findAllByMemberId(testMember.getId());
+        assertThat(todos).hasSize(2); // 기존 1개 + 새로 추가된 1개
+    }
+
+    @Test
+    void testUpdateTodo() {
+        // given
+        TodoDto updatedTodo = new TodoDto("Updated Title", "Updated Description");
+
+        // when
+        TodoDto result = todoService.updateTodo(testTodo.getId(), updatedTodo, testMember.getId());
+
+        // then
+        assertThat(result.getTitle()).isEqualTo("Updated Title");
+        assertThat(result.getDescription()).isEqualTo("Updated Description");
+
+        // 실제 DB에서 확인
+        Todo updatedTodoFromDb = todoRepository.findByIdAndMemberId(testTodo.getId(), testMember.getId());
+        assertThat(updatedTodoFromDb.getTitle()).isEqualTo("Updated Title");
+    }
+
+    @Test
+    void testUpdateTodoStatus() {
+        // given
+        TodoStatus newStatus = TodoStatus.COMPLETED;
+
+        // when
+        TodoDto result = todoService.updateTodoStatus(testTodo.getId(), newStatus, testMember.getId());
+
+        // then
+        assertThat(result.getStatus()).isEqualTo(newStatus);
+
+        // 실제 DB에서 확인
+        Todo updatedTodoFromDb = todoRepository.findByIdAndMemberId(testTodo.getId(), testMember.getId());
+        assertThat(updatedTodoFromDb.getStatus()).isEqualTo(newStatus);
+    }
+
+    @Test
+    void testDeleteTodo() {
+        // when
+        TodoDto result = todoService.deleteTodo(testTodo.getId(), testMember.getId());
+
+        // then
+        assertThat(result.getTitle()).isEqualTo(testTodo.getTitle());
+
+        // 실제 DB에서 삭제되었는지 확인
+        Optional<Todo> deletedTodo = todoRepository.findById(testTodo.getId());
+        assertThat(deletedTodo).isEmpty();
+    }
 }

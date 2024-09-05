@@ -85,4 +85,28 @@ public class Member extends BaseEntity {
     public void removeCalendarEvent(CalendarEvent calendarEvent) {
         this.calendarEvents.remove(calendarEvent);
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public List<CalendarEvent> getCalendarEvents() {
+        return calendarEvents;
+    }
+
+    public void setCalendarEvents(List<CalendarEvent> calendarEvents) {
+        this.calendarEvents = calendarEvents;
+    }
+
+    public List<Todo> getTodos() {
+        return todos;
+    }
+
+    public void setTodos(List<Todo> todos) {
+        this.todos = todos;
+    }
 }

@@ -56,6 +56,10 @@ public class Todo extends BaseEntity {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -69,4 +73,11 @@ public class Todo extends BaseEntity {
                 .build();
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public TodoStatus getStatus() {
+        return status;
+    }
 }

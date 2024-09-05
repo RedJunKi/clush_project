@@ -1,5 +1,7 @@
 package com.clush.test.calendar;
 
+import com.clush.test.member.Member;
+import com.clush.test.member.MemberRepository;
 import com.clush.test.todo.TodoDto;
 import com.clush.test.todo.TodoResponse;
 import jakarta.persistence.EntityManager;
@@ -11,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -20,89 +23,103 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 class CalendarServiceImplTest {
 
-    @PersistenceContext
-    EntityManager em;
+    @Autowired
+    private CalendarServiceImpl calendarService;
 
     @Autowired
-    CalendarService calendarService;
+    private CalendarRepository calendarRepository;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
+    private Member testMember;
     private CalendarEvent savedCalendarEvent;
 
-//    @BeforeEach
-//    void setUp() {
-//        savedCalendarEvent = createCalendarEvent();
-//    }
-//
-//    @Test
-//    void getAllEventsBetween() {
-//        //given
-//        LocalDateTime startDate = LocalDateTime.of(2024, 9, 1, 0, 0, 0);
-//        LocalDateTime endDate = LocalDateTime.of(2024, 9, 30, 0, 0, 0);
-//
-//        //when
-//        CalendarEventResponse calendarEvents = calendarService.getAllEventsBetween(startDate, endDate);
-//
-//        //then
-//        assertThat(calendarEvents.getCalendarEventDtos().size()).isGreaterThanOrEqualTo(1);
-//    }
-//
-//    @Test
-//    void getEventById() {
-//        //given
-//        //when
-//        CalendarEventDto result = calendarService.getEventById(savedCalendarEvent.getId());
-//
-//        //then
-//        assertThat(result).isNotNull();
-//        assertThat(result.getTitle()).isEqualTo(savedCalendarEvent.getTitle());
-//    }
-//
-//    @Test
-//    void addEvent() {
-//        //given
-//        CalendarEvent calendarEvent = new CalendarEvent("생성", "테스트", LocalDateTime.of(2024, 9, 3, 0, 0, 0), LocalDateTime.of(2024, 9, 10, 23, 59, 59));
-//
-//        //when
-//        CalendarEventDto result = calendarService.addEvent(calendarEvent.entityToDto());
-//
-//        //then
-//        assertThat(result.getTitle()).isEqualTo(calendarEvent.getTitle());
-//        assertThat(result.getEndDate()).isEqualTo(calendarEvent.getEndDate());
-//    }
-//
-//    @Test
-//    void updateEvent() {
-//        //given
-//        CalendarEventDto calendarEventDto = new CalendarEventDto("수정본", "수정내용", LocalDateTime.now(), LocalDateTime.now());
-//
-//        //when
-//        calendarService.updateEvent(savedCalendarEvent.getId(), calendarEventDto);
-//        CalendarEventDto result = calendarService.getEventById(savedCalendarEvent.getId());
-//
-//        //then
-//        assertThat(result.getTitle()).isEqualTo(calendarEventDto.getTitle());
-//        assertThat(result.getStartDate()).isEqualTo(calendarEventDto.getStartDate());
-//
-//        CalendarEventDto repeatedUpdate = calendarService.updateEvent(savedCalendarEvent.getId(), calendarEventDto);
-//        assertThat(repeatedUpdate.getTitle()).isEqualTo(calendarEventDto.getTitle());
-//        assertThat(repeatedUpdate.getDescription()).isEqualTo(calendarEventDto.getDescription());
-//    }
-//
-//    @Test
-//    void deleteEvent() {
-//        //given
-//        //when
-//        calendarService.deleteEvent(savedCalendarEvent.getId());
-//
-//        //then
-//        assertThatThrownBy(() -> calendarService.getEventById(savedCalendarEvent.getId()));
-//        assertThatThrownBy(() -> calendarService.deleteEvent(savedCalendarEvent.getId()));
-//    }
-//
-//    private CalendarEvent createCalendarEvent() {
-//        CalendarEvent calendarEvent = new CalendarEvent("제목", "내용", LocalDateTime.of(2024, 9, 3, 0, 0, 0), LocalDateTime.of(2024, 9, 10, 23, 59, 59));
-//        em.persist(calendarEvent);
-//        em.flush();
-//        return calendarEvent;
-//    }
+    @BeforeEach
+    void setUp() {
+        // 회원 생성 및 저장
+        testMember = new Member();
+        testMember.setEmail("testmember@example.com");
+        testMember.setUsername("TestMember");
+        testMember.setPassword("password");
+        memberRepository.save(testMember);
+
+        // CalendarEvent 생성 및 저장
+        savedCalendarEvent = new CalendarEvent("제목", "내용", LocalDateTime.of(2024, 9, 3, 0, 0, 0), LocalDateTime.of(2024, 9, 10, 23, 59, 59), testMember);
+        calendarRepository.save(savedCalendarEvent);
+    }
+
+    @Test
+    void getAllEventsBetween() {
+        // given
+        LocalDateTime startDate = LocalDateTime.of(2024, 9, 1, 0, 0, 0);
+        LocalDateTime endDate = LocalDateTime.of(2024, 9, 30, 0, 0, 0);
+
+        // when
+        CalendarEventResponse calendarEvents = calendarService.getAllEventsBetween(startDate, endDate, testMember.getId());
+
+        // then
+        assertThat(calendarEvents.getCalendarEventDtos().size()).isGreaterThanOrEqualTo(1);
+        assertThat(calendarEvents.getCalendarEventDtos().get(0).getTitle()).isEqualTo(savedCalendarEvent.getTitle());
+    }
+
+    @Test
+    void getEventById() {
+        // when
+        CalendarEventDto result = calendarService.getEventById(savedCalendarEvent.getId(), testMember.getId());
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.getTitle()).isEqualTo(savedCalendarEvent.getTitle());
+    }
+
+    @Test
+    void addEvent() {
+        // given
+        CalendarEventDto newEventDto = new CalendarEventDto("새 제목", "새 내용", LocalDateTime.of(2024, 9, 12, 0, 0, 0), LocalDateTime.of(2024, 9, 20, 23, 59, 59));
+
+        // when
+        CalendarEventDto result = calendarService.addEvent(newEventDto, testMember.getId());
+
+        // then
+        assertThat(result.getTitle()).isEqualTo(newEventDto.getTitle());
+        assertThat(result.getEndDate()).isEqualTo(newEventDto.getEndDate());
+
+        // DB에서 새로 추가된 이벤트가 있는지 확인
+        List<CalendarEvent> events = calendarRepository.findAllByStartDateBetweenAndMemberId(newEventDto.getStartDate(), newEventDto.getEndDate(), testMember.getId());
+        assertThat(events).hasSize(1);
+    }
+
+    @Test
+    void updateEvent() {
+        // given
+        CalendarEventDto updatedEventDto = new CalendarEventDto("수정된 제목", "수정된 내용", LocalDateTime.now(), LocalDateTime.now());
+
+        // when
+        CalendarEventDto result = calendarService.updateEvent(savedCalendarEvent.getId(), updatedEventDto, testMember.getId());
+
+        // then
+        assertThat(result.getTitle()).isEqualTo(updatedEventDto.getTitle());
+        assertThat(result.getStartDate()).isEqualTo(updatedEventDto.getStartDate());
+
+        // 실제 DB에서 업데이트된 이벤트 확인
+        CalendarEventDto updatedEventFromDb = calendarService.getEventById(savedCalendarEvent.getId(), testMember.getId());
+        assertThat(updatedEventFromDb.getTitle()).isEqualTo(updatedEventDto.getTitle());
+        assertThat(updatedEventFromDb.getDescription()).isEqualTo(updatedEventDto.getDescription());
+    }
+
+    @Test
+    void deleteEvent() {
+        // when
+        calendarService.deleteEvent(savedCalendarEvent.getId(), testMember.getId());
+
+        // then
+        assertThatThrownBy(() -> calendarService.getEventById(savedCalendarEvent.getId(), testMember.getId()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("해당 아이디를 찾을 수 없습니다.");
+
+        assertThatThrownBy(() -> calendarService.deleteEvent(savedCalendarEvent.getId(), testMember.getId()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("해당 아이디를 찾을 수 없습니다.");
+    }
 }
