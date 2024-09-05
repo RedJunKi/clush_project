@@ -1,9 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetchTodos();
+     const token = localStorage.getItem('authToken'); // JWT 토큰을 로컬 스토리지에서 가져온다
+        if (token) {
+            const memberId = getMemberIdFromToken(token); // JWT 토큰에서 memberId를 추출하는 함수
+            fetchTodos(memberId); // memberId를 사용하여 TODO를 가져온다
+        }
 });
 
+ const token = localStorage.getItem('authToken'); // JWT 토큰을 로컬 스토리지에서 가져온다
+    if (token) {
+        const memberId = getMemberIdFromToken(token); // JWT 토큰에서 memberId를 추출하는 함수
+        fetchTodos(memberId); // memberId를 사용하여 TODO를 가져온다
+    }
+
 function fetchTodos() {
-    fetch('/api/todos')
+    fetch('/api/todos?memberId=${memberId}')
         .then(response => response.json())
         .then(data => {
             renderTodos(data.todos);

@@ -6,7 +6,6 @@ import com.clush.test.member.Member;
 import com.clush.test.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +21,8 @@ public class TodoServiceImpl implements TodoService {
     private final MemberRepository memberRepository;
 
     @Override
-    public TodoResponse getAllTodos() {
-        List<Todo> todos = todoRepository.findAll();
+    public TodoResponse getAllTodos(Long memberId) {
+        List<Todo> todos = todoRepository.findAllByMemberId(memberId);
 
         List<TodoDto> todoDtos = todos.stream()
                 .map(Todo::entityToDto)
@@ -33,8 +32,8 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public TodoDto getTodoById(long todoId) {
-        Todo result = findById(todoId);
+    public TodoDto getTodoById(Long todoId, Long memberId) {
+        Todo result = todoRepository.findByIdAndMemberId(todoId, memberId);
 
         return result.entityToDto();
     }
@@ -51,11 +50,15 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public TodoDto updateTodo(long todoId, TodoDto todoDto) {
-        Todo todo = findById(todoId);
+    public TodoDto updateTodo(Long todoId, TodoDto todoDto, Long memberId) {
+        Todo todo = todoRepository.findByIdAndMemberId(todoId, memberId);
+
         todo.setTitle(todoDto.getTitle());
         todo.setDescription(todoDto.getDescription());
-        todo.setStatus(todoDto.getStatus());
+
+        if (todoDto.getStatus() != null) {
+            todo.setStatus(todoDto.getStatus());
+        }
 
         todoRepository.save(todo);
 
@@ -63,8 +66,9 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public TodoDto updateTodoStatus(long todoId, TodoStatus status) {
-        Todo todo = findById(todoId);
+    public TodoDto updateTodoStatus(Long todoId, TodoStatus status, Long memberId) {
+        Todo todo = todoRepository.findByIdAndMemberId(todoId, memberId);
+
         todo.setStatus(status);
 
         todoRepository.save(todo);
@@ -72,14 +76,10 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public TodoDto deleteTodo(long todoId) {
-        Todo todo = findById(todoId);
+    public TodoDto deleteTodo(Long todoId, Long memberId) {
+        Todo todo = todoRepository.findByIdAndMemberId(todoId, memberId);
+
         todoRepository.delete(todo);
         return todo.entityToDto();
-    }
-
-    private Todo findById(long todoId) {
-        return todoRepository.findById(todoId)
-                .orElseThrow(() -> new IllegalArgumentException("찾을수 없는 아이디입니다."));
     }
 }

@@ -2,15 +2,13 @@ package com.clush.test.member;
 
 import com.clush.test.calendar.CalendarEvent;
 import com.clush.test.common.BaseEntity;
-import com.clush.test.role.Role;
 import com.clush.test.todo.Todo;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @Entity
 @NoArgsConstructor
@@ -29,11 +27,6 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Todo> todos = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "member_role",
-            joinColumns = @JoinColumn(name = "member_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
 
     public Member(String email, String password, String username) {
         this.email = email;
@@ -52,14 +45,6 @@ public class Member extends BaseEntity {
         return new MemberPostDto(this.id, this.email, this.username, this.password);
     }
 
-    public void addRoles(Role role) {
-        this.roles.add(role);
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
     public long getId() {
         return id;
     }
@@ -75,6 +60,14 @@ public class Member extends BaseEntity {
     public void setEmail(String email) {
         this.email = email;
 
+    }
+
+    public void addTodo(Todo todo) {
+        this.todos.add(todo);
+    }
+
+    public void removeTodo(Todo todo) {
+        this.todos.remove(todo);
     }
 
     public void setPassword(String password) {

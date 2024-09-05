@@ -5,7 +5,5 @@ public interface MemberService {
 
     Member login(MemberLoginDto memberLoginDto);
 
-    MemberPostDto update(Long memberId, MemberPostDto memberPostDto);
-
     MemberPostDto delete(Long userId);
 }

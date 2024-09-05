@@ -1,11 +1,15 @@
 package com.clush.test.member;
 
+
 public class MemberPostDto {
 
     private Long id;
     private String email;
     private String username;
     private String password;
+
+    public MemberPostDto() {
+    }
 
     public MemberPostDto(Long id, String email, String username, String password) {
         this.id = id;

@@ -26,9 +26,19 @@ public class Todo extends BaseEntity {
     public Todo(String title, String description, Member member) {
         this.title = title;
         this.description = description;
-        this.member = member;
+        setMember(member);
         this.status = TodoStatus.PENDING;
     }
+
+    public void setMember(Member member) {
+
+        if (this.member != null) {
+            this.member.removeTodo(this);
+        }
+        this.member = member;
+        member.addTodo(this);
+    }
+
 
     public void setTitle(String title) {
         this.title = title;
