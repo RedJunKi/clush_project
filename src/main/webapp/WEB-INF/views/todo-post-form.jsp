@@ -31,7 +31,6 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const token = localStorage.getItem('authToken'); // JWT 토큰 가져오기
 
                 const backButton = document.getElementById('backButton');
                 const addTodoForm = document.getElementById('addTodoForm');
@@ -51,10 +50,6 @@
 
                         fetch('/api/todos', {
                             method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${token}` // JWT 토큰을 헤더에 포함
-                            },
                             body: JSON.stringify({
                                 title: title,
                                 description: description
@@ -72,12 +67,6 @@
                     });
                 }
             });
-
-            function getMemberIdFromToken(token) {
-                // 토큰에서 memberId를 추출하려면 서버 측에서 처리하는 것이 더 안전합니다.
-                const payload = JSON.parse(atob(token.split('.')[1])); // JWT의 페이로드 디코딩
-                return payload.memberId; // payload에서 memberId 추출
-            }
         </script>
     </body>
 </html>

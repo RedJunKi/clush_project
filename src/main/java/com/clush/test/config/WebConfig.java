@@ -16,6 +16,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/signup").setViewName("sign-up");
         registry.addViewController("/").setViewName("home");
+        registry.addViewController("/calendars").setViewName("calendar");
+        registry.addViewController("/calendars/add").setViewName("calendar-post-form");
     }
 
     @Override
@@ -29,6 +31,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new SessionInterceptor())
-                .addPathPatterns("/", "/todos", "/calendar");
+                .addPathPatterns("/", "/todos/**", "/calendars/**");
     }
 }
