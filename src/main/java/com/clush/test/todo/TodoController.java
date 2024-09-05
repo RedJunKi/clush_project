@@ -1,20 +1,25 @@
 package com.clush.test.todo;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
-@RequestMapping("/api/todos")
 @RequiredArgsConstructor
-@Slf4j
+@Tag(name = "Todo", description = "Todo API")
+@RequestMapping("/api/todos")
 public class TodoController {
 
     private final TodoService todoService;
 
     @GetMapping
+    @Operation(summary = "모든 Todo 조회", description = "세션에 저장된 memberId로 회원이 작성한 모든 Todo 가져오기")
     public ResponseEntity<TodoResponse> getAllTodos(HttpSession session) {
         Long memberId = (Long) session.getAttribute("memberId");
 
@@ -24,6 +29,7 @@ public class TodoController {
     }
 
     @GetMapping("/{todoId}")
+    @Operation(summary = "Todo 단건 조회", description = "대상 Todo id와 세션에 저장된 memberId로 작성한 Todo 단건 가져오기")
     public ResponseEntity<TodoDto> getTodoById(@PathVariable Long todoId, HttpSession session) {
         Long memberId = (Long) session.getAttribute("memberId");
 
@@ -32,6 +38,7 @@ public class TodoController {
     }
 
     @PostMapping
+    @Operation(summary = "Todo 저장", description = "Todo 저장하기")
     public ResponseEntity<TodoDto> addTodo(@RequestBody TodoDto todoDto, HttpSession session) {
         Long memberId = (Long) session.getAttribute("memberId");
 
@@ -41,6 +48,7 @@ public class TodoController {
     }
 
     @PutMapping("/{todoId}")
+    @Operation(summary = "Todo 수정", description = "대상 Todo id와 세션에 저장된 memberId로 작성한 Todo 수정하기")
     public ResponseEntity<TodoDto> updateTodo(@PathVariable Long todoId, @RequestBody TodoDto todoDto, HttpSession session) {
         Long memberId = (Long) session.getAttribute("memberId");
 
@@ -49,6 +57,7 @@ public class TodoController {
     }
 
     @PutMapping("/{todoId}/status")
+    @Operation(summary = "Todo 상태 수정", description = "대상 Todo id와 세션에 저장된 memberId로 작성한 Todo 상태만 수정하기")
     public ResponseEntity<TodoDto> updateTodoStatus(@PathVariable Long todoId, @RequestBody TodoStatus status, HttpSession session) {
         Long memberId = (Long) session.getAttribute("memberId");
 
@@ -57,6 +66,7 @@ public class TodoController {
     }
 
     @DeleteMapping("/{todoId}")
+    @Operation(summary = "Todo 삭제", description = "대상 Todo id와 세션에 저장된 memberId로 작성한 Todo 삭제하기")
     public ResponseEntity<TodoDto> deleteTodo(@PathVariable Long todoId, HttpSession session) {
         Long memberId = (Long) session.getAttribute("memberId");
 
@@ -64,3 +74,4 @@ public class TodoController {
         return ResponseEntity.ok(todo);
     }
 }
+
