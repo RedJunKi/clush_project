@@ -2,10 +2,7 @@ package com.clush.test.calendar;
 
 import com.clush.test.member.Member;
 import com.clush.test.member.MemberRepository;
-import com.clush.test.todo.TodoDto;
-import com.clush.test.todo.TodoResponse;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringBootTest
 @Transactional

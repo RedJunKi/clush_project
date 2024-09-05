@@ -12,4 +12,9 @@ public class MemberLoginDto {
     private String email;
     @NotEmpty
     private String password;
+
+    public MemberLoginDto(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }
