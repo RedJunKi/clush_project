@@ -17,9 +17,10 @@ public class CalendarRepositoryCustomImpl implements CalendarRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<CalendarEvent> findAllByStartDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
+    public List<CalendarEvent> findAllByStartDateBetweenAndMemberId(LocalDateTime startDate, LocalDateTime endDate, Long memberId) {
         return queryFactory.selectFrom(calendarEvent)
                 .where(calendarEvent.startDate.between(startDate, endDate))
+                .where(calendarEvent.member.id.eq(memberId))
                 .fetch();
     }
 }

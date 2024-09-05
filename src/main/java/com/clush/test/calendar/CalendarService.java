@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 public interface CalendarService {
-    CalendarEventResponse getAllEventsBetween(LocalDateTime start, LocalDateTime end);
+    CalendarEventResponse getAllEventsBetween(LocalDateTime start, LocalDateTime end, Long memberId);
 
-    CalendarEventDto getEventById(long eventId);
+    CalendarEventDto getEventById(Long eventId, Long memberId);
 
-    CalendarEventDto addEvent(CalendarEventDto eventDto);
+    CalendarEventDto addEvent(CalendarEventDto eventDto, Long memberId);
 
-    CalendarEventDto updateEvent(long eventId, CalendarEventDto eventDto);
+    CalendarEventDto updateEvent(Long eventId, CalendarEventDto eventDto, Long memberId);
 
-    CalendarEventDto deleteEvent(long eventId);
+    CalendarEventDto deleteEvent(Long eventId, Long memberId);
 }

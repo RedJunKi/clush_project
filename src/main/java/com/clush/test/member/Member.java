@@ -77,4 +77,12 @@ public class Member extends BaseEntity {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public void addCalendarEvent(CalendarEvent calendarEvent) {
+        this.calendarEvents.add(calendarEvent);
+    }
+
+    public void removeCalendarEvent(CalendarEvent calendarEvent) {
+        this.calendarEvents.remove(calendarEvent);
+    }
 }

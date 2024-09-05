@@ -2,14 +2,11 @@ package com.clush.test.calendar;
 
 import com.clush.test.common.BaseEntity;
 import com.clush.test.member.Member;
-import com.clush.test.todo.TodoDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -33,11 +30,21 @@ public class CalendarEvent extends BaseEntity {
     @Column(name = "END_DATE")
     private LocalDateTime endDate;
 
-    public CalendarEvent(String title, String description, LocalDateTime startDate, LocalDateTime endDate) {
+    public CalendarEvent(String title, String description, LocalDateTime startDate, LocalDateTime endDate, Member member) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
+        setMember(member);
+    }
+
+    public void setMember(Member member) {
+
+        if (this.member != null) {
+            this.member.removeCalendarEvent(this);
+        }
+        this.member = member;
+        member.addCalendarEvent(this);
     }
 
     public CalendarEventDto entityToDto() {
