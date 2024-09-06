@@ -1,9 +1,14 @@
-package com.clush.test.todo;
+package com.clush.test.todo.service;
 
 import com.clush.test.global.BusinessLogicException;
 import com.clush.test.global.ExceptionCode;
-import com.clush.test.member.Member;
-import com.clush.test.member.MemberRepository;
+import com.clush.test.member.entity.Member;
+import com.clush.test.member.repository.MemberRepository;
+import com.clush.test.todo.repository.TodoRepository;
+import com.clush.test.todo.entity.TodoStatus;
+import com.clush.test.todo.entity.Todo;
+import com.clush.test.todo.entity.TodoDto;
+import com.clush.test.todo.entity.TodoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

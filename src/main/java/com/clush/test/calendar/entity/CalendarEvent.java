@@ -1,7 +1,7 @@
-package com.clush.test.calendar;
+package com.clush.test.calendar.entity;
 
 import com.clush.test.common.BaseEntity;
-import com.clush.test.member.Member;
+import com.clush.test.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,8 +1,14 @@
 package com.clush.test.todo;
 
-import com.clush.test.member.Member;
-import com.clush.test.member.MemberRepository;
+import com.clush.test.member.entity.Member;
+import com.clush.test.member.repository.MemberRepository;
 
+import com.clush.test.todo.entity.Todo;
+import com.clush.test.todo.entity.TodoDto;
+import com.clush.test.todo.entity.TodoResponse;
+import com.clush.test.todo.entity.TodoStatus;
+import com.clush.test.todo.repository.TodoRepository;
+import com.clush.test.todo.service.TodoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

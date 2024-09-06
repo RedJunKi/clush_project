@@ -3,6 +3,11 @@ package com.clush.test.member;
 import com.clush.test.global.BusinessLogicException;
 import com.clush.test.global.ExceptionCode;
 
+import com.clush.test.member.entity.Member;
+import com.clush.test.member.entity.MemberLoginDto;
+import com.clush.test.member.entity.MemberPostDto;
+import com.clush.test.member.repository.MemberRepository;
+import com.clush.test.member.service.MemberServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

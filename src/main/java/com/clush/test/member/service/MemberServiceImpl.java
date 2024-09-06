@@ -1,8 +1,12 @@
-package com.clush.test.member;
+package com.clush.test.member.service;
 
 import com.clush.test.global.BusinessLogicException;
 import com.clush.test.global.ExceptionCode;
 
+import com.clush.test.member.entity.Member;
+import com.clush.test.member.entity.MemberLoginDto;
+import com.clush.test.member.entity.MemberPostDto;
+import com.clush.test.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;

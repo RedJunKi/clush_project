@@ -6,6 +6,11 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.clush.test.member.controller.MemberController;
+import com.clush.test.member.entity.Member;
+import com.clush.test.member.entity.MemberLoginDto;
+import com.clush.test.member.entity.MemberPostDto;
+import com.clush.test.member.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

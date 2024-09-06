@@ -1,4 +1,6 @@
-package com.clush.test.calendar;
+package com.clush.test.calendar.repository;
+
+import com.clush.test.calendar.entity.CalendarEvent;
 
 import java.time.LocalDateTime;
 import java.util.List;

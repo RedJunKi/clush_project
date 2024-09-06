@@ -1,14 +1,15 @@
-package com.clush.test.calendar;
+package com.clush.test.calendar.repository;
 
+import com.clush.test.calendar.entity.CalendarEvent;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.clush.test.calendar.QCalendarEvent.calendarEvent;
+import static com.clush.test.calendar.entity.QCalendarEvent.calendarEvent;
+
 
 @Repository
 @RequiredArgsConstructor

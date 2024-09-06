@@ -1,9 +1,8 @@
-package com.clush.test.calendar;
+package com.clush.test.calendar.repository;
 
+import com.clush.test.calendar.entity.CalendarEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface CalendarRepository extends JpaRepository<CalendarEvent, Long>, CalendarRepositoryCustom {

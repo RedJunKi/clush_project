@@ -1,8 +1,8 @@
-package com.clush.test.member;
+package com.clush.test.member.entity;
 
-import com.clush.test.calendar.CalendarEvent;
+import com.clush.test.calendar.entity.CalendarEvent;
 import com.clush.test.common.BaseEntity;
-import com.clush.test.todo.Todo;
+import com.clush.test.todo.entity.Todo;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 

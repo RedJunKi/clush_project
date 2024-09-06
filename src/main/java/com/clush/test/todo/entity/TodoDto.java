@@ -1,4 +1,4 @@
-package com.clush.test.todo;
+package com.clush.test.todo.entity;
 
 import lombok.Builder;
 import lombok.NoArgsConstructor;

@@ -1,8 +1,6 @@
-package com.clush.test.calendar;
+package com.clush.test.calendar.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +8,8 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CalendarEventDto {
     private String title;
     private String description;

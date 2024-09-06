@@ -1,4 +1,4 @@
-package com.clush.test.member;
+package com.clush.test.member.entity;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

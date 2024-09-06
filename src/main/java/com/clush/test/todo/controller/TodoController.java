@@ -1,14 +1,15 @@
-package com.clush.test.todo;
+package com.clush.test.todo.controller;
 
+import com.clush.test.todo.entity.TodoDto;
+import com.clush.test.todo.entity.TodoResponse;
+import com.clush.test.todo.service.TodoService;
+import com.clush.test.todo.entity.TodoStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor

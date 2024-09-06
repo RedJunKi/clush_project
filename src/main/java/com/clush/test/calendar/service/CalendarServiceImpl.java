@@ -1,9 +1,13 @@
-package com.clush.test.calendar;
+package com.clush.test.calendar.service;
 
+import com.clush.test.calendar.entity.CalendarEvent;
+import com.clush.test.calendar.entity.CalendarEventDto;
+import com.clush.test.calendar.entity.CalendarEventResponse;
+import com.clush.test.calendar.repository.CalendarRepository;
 import com.clush.test.global.BusinessLogicException;
 import com.clush.test.global.ExceptionCode;
-import com.clush.test.member.Member;
-import com.clush.test.member.MemberRepository;
+import com.clush.test.member.entity.Member;
+import com.clush.test.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

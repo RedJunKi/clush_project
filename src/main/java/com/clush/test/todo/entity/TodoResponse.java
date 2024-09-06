@@ -1,4 +1,6 @@
-package com.clush.test.todo;
+package com.clush.test.todo.entity;
+
+import com.clush.test.todo.entity.TodoDto;
 
 import java.util.List;
 

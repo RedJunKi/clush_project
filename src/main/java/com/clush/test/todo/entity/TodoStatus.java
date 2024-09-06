@@ -1,4 +1,4 @@
-package com.clush.test.todo;
+package com.clush.test.todo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

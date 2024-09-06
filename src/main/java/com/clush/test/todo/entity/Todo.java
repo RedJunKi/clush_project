@@ -1,7 +1,7 @@
-package com.clush.test.todo;
+package com.clush.test.todo.entity;
 
 import com.clush.test.common.BaseEntity;
-import com.clush.test.member.Member;
+import com.clush.test.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 

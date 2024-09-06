@@ -1,4 +1,4 @@
-package com.clush.test.calendar;
+package com.clush.test.calendar.entity;
 
 import lombok.Getter;
 

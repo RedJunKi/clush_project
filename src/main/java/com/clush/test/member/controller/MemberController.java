@@ -1,5 +1,9 @@
-package com.clush.test.member;
+package com.clush.test.member.controller;
 
+import com.clush.test.member.entity.Member;
+import com.clush.test.member.entity.MemberLoginDto;
+import com.clush.test.member.entity.MemberPostDto;
+import com.clush.test.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;

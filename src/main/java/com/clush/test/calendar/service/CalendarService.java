@@ -1,7 +1,9 @@
-package com.clush.test.calendar;
+package com.clush.test.calendar.service;
+
+import com.clush.test.calendar.entity.CalendarEventDto;
+import com.clush.test.calendar.entity.CalendarEventResponse;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public interface CalendarService {
     CalendarEventResponse getAllEventsBetween(LocalDateTime start, LocalDateTime end, Long memberId);

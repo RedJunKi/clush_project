@@ -1,5 +1,6 @@
-package com.clush.test.todo;
+package com.clush.test.todo.repository;
 
+import com.clush.test.todo.entity.Todo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,5 +1,6 @@
-package com.clush.test.member;
+package com.clush.test.member.repository;
 
+import com.clush.test.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

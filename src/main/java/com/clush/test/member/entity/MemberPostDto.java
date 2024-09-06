@@ -1,4 +1,4 @@
-package com.clush.test.member;
+package com.clush.test.member.entity;
 
 
 public class MemberPostDto {
