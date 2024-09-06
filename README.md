@@ -2,8 +2,8 @@
 <h2>개요</h2>
 이 프로젝트는 Spring Boot를 사용하여 제작된 REST API 애플리케이션으로, 두 가지 주요 기능을 제공합니다.
 
-1. <h2>할일(ToDo) API</h2>: 할일을 등록하고, 관리하는 API.
-2. <h2>일정(Calendar) API</h2>: 일정을 등록하고, 관리하는 API.
+1. <h2>할일(ToDo) API</h2> 할일을 등록하고, 관리하는 API.
+2. <h2>일정(Calendar) API</h2> 일정을 등록하고, 관리하는 API.
 
 두 API 모두 CRUD 작업을 지원하며, MySQL 데이터베이스와 연결되어 있습니다. 
 데이터베이스 스키마는 todo, member, calendar_event 세 가지 주요 엔티티를 기반으로 구성되어 있습니다.
@@ -30,3 +30,44 @@ API 문서화를 간편하게 하기 위한 도구.
   Lombok
 Getter, Setter, 생성자 등의 간편 애너테이션을 사용하기 위해 사용.
 </div>
+
+<h2>데이터 베이스 스키마</h2>
+<img alt="erd" src="https://github.com/user-attachments/assets/74b789ba-7e75-4d76-b867-ee90865351a0" width="1000" height="600">
+<h3>ERD 구성</h3>
+<h4>todo: 할일 정보를 담는 테이블
+  member: 사용자 정보를 담는 테이블
+  calendar_event: 일정 정보를 담는 테이블
+</h4>
+CREATE TABLE member (
+  member_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255),
+  password VARCHAR(255),
+  username VARCHAR(255),
+  created_at DATETIME(6),
+  modified_at DATETIME(6)
+);
+
+CREATE TABLE todo (
+  todo_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255),
+  description VARCHAR(255),
+  status ENUM('PENDING', 'IN_PROGRESS', 'COMPLETED'),
+  created_at DATETIME(6),
+  modified_at DATETIME(6),
+  member_member_id BIGINT,
+  FOREIGN KEY (member_member_id) REFERENCES member(member_id)
+);
+
+CREATE TABLE calendar_event (
+  calendar_event_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255),
+  description VARCHAR(255),
+
+  start_date DATETIME(6),
+  end_date DATETIME(6),
+  created_at DATETIME(6),
+  modified_at DATETIME(6),
+  member_member_id BIGINT,
+  FOREIGN KEY (member_member_id) REFERENCES member(member_id)
+);
+
