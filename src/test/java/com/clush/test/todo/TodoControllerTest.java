@@ -1,10 +1,10 @@
 package com.clush.test.todo;
 
-import com.clush.test.todo.controller.TodoController;
-import com.clush.test.todo.entity.TodoDto;
-import com.clush.test.todo.entity.TodoResponse;
-import com.clush.test.todo.entity.TodoStatus;
-import com.clush.test.todo.service.TodoService;
+import com.clush.test.domain.todo.controller.TodoController;
+import com.clush.test.domain.todo.entity.TodoDto;
+import com.clush.test.domain.todo.entity.TodoResponse;
+import com.clush.test.domain.todo.entity.TodoStatus;
+import com.clush.test.domain.todo.service.TodoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

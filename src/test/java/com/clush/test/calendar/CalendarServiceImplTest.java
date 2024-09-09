@@ -1,12 +1,12 @@
 package com.clush.test.calendar;
 
-import com.clush.test.calendar.entity.CalendarEvent;
-import com.clush.test.calendar.entity.CalendarEventDto;
-import com.clush.test.calendar.entity.CalendarEventResponse;
-import com.clush.test.calendar.repository.CalendarRepository;
-import com.clush.test.calendar.service.CalendarServiceImpl;
-import com.clush.test.member.entity.Member;
-import com.clush.test.member.repository.MemberRepository;
+import com.clush.test.domain.calendar.entity.CalendarEvent;
+import com.clush.test.domain.calendar.entity.CalendarEventDto;
+import com.clush.test.domain.calendar.entity.CalendarEventResponse;
+import com.clush.test.domain.calendar.repository.CalendarRepository;
+import com.clush.test.domain.calendar.service.CalendarServiceImpl;
+import com.clush.test.domain.member.entity.Member;
+import com.clush.test.domain.member.repository.MemberRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
