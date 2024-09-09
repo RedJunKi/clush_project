@@ -73,8 +73,10 @@ class MemberControllerTest {
     void deleteMember() throws Exception {
         MemberPostDto memberPostDto = new MemberPostDto("testmember@example.com", "password", "TestMember");
         when(memberService.delete(anyLong())).thenReturn(memberPostDto);
+        Long testMemberId = 1L;
 
-        mockMvc.perform(delete("/api/members/{memberId}", 1L))
+        mockMvc.perform(delete("/api/members/{memberId}", 1L)
+                .sessionAttr("memberId", testMemberId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value(memberPostDto.getEmail()))
                 .andExpect(jsonPath("$.username").value(memberPostDto.getUsername()));

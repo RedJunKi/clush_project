@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -123,5 +124,25 @@ class CalendarServiceImplTest {
         assertThatThrownBy(() -> calendarService.deleteEvent(savedCalendarEvent.getId(), testMember.getId()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("해당 아이디를 찾을 수 없습니다.");
+    }
+
+    @Test
+    public void findByEndDate() {
+        // given
+        LocalDateTime birthDay = LocalDateTime.of(1995,4,14,0,0,0);
+        CalendarEvent event = new CalendarEvent();
+        event.setTitle("생일");
+        event.setDescription("내 생일");
+        event.setEndDate(birthDay);
+
+        calendarRepository.save(event);
+
+        // when
+        LocalDate today = LocalDate.of(1995,4,14);
+        List<CalendarEvent> events = calendarRepository.findByEndDate(today).get();
+
+        // then
+        assertThat(events.isEmpty()).isFalse();
+        assertThat("생일").isEqualTo(events.get(0).getTitle());
     }
 }

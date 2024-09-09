@@ -17,6 +17,18 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
       show-sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: beenzino8821@gmail.com
+    password: ${APP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+             enable: true
 jwt:
   secretKey: 12345678901234567890123456789012
   refreshKey: 12345678901234567890123456789012
