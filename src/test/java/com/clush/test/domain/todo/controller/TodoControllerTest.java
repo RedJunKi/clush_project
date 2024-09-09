@@ -1,4 +1,4 @@
-package com.clush.test.todo;
+package com.clush.test.domain.todo.controller;
 
 import com.clush.test.domain.todo.controller.TodoController;
 import com.clush.test.domain.todo.entity.TodoDto;

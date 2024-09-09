@@ -1,4 +1,4 @@
-package com.clush.test.member;
+package com.clush.test.domain.member.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;

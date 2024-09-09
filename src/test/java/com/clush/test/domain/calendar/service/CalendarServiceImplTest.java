@@ -1,4 +1,4 @@
-package com.clush.test.calendar;
+package com.clush.test.domain.calendar.service;
 
 import com.clush.test.domain.calendar.entity.CalendarEvent;
 import com.clush.test.domain.calendar.entity.CalendarEventDto;

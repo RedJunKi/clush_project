@@ -1,4 +1,4 @@
-package com.clush.test.member;
+package com.clush.test.domain.member.service;
 
 import com.clush.test.global.exception.BusinessLogicException;
 import com.clush.test.global.exception.ExceptionCode;

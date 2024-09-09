@@ -1,4 +1,4 @@
-package com.clush.test.todo;
+package com.clush.test.domain.todo.service;
 
 import com.clush.test.domain.member.entity.Member;
 import com.clush.test.domain.member.repository.MemberRepository;

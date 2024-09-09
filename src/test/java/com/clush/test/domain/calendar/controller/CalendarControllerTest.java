@@ -1,4 +1,4 @@
-package com.clush.test.calendar;
+package com.clush.test.domain.calendar.controller;
 
 import com.clush.test.domain.calendar.controller.CalendarController;
 
