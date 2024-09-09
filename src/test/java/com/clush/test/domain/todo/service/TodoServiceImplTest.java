@@ -8,7 +8,6 @@ import com.clush.test.domain.todo.entity.TodoDto;
 import com.clush.test.domain.todo.entity.TodoResponse;
 import com.clush.test.domain.todo.entity.TodoStatus;
 import com.clush.test.domain.todo.repository.TodoRepository;
-import com.clush.test.domain.todo.service.TodoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,7 +39,6 @@ class TodoServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // 회원 생성 및 저장
         testMember = new Member();
         testMember.setEmail("testuser@example.com");
         testMember.setUsername("TestUser");
@@ -48,7 +46,6 @@ class TodoServiceImplTest {
 
         memberRepository.save(testMember);
 
-        // Todo 생성 및 저장
         testTodo = new Todo();
         testTodo.setTitle("Initial Title");
         testTodo.setDescription("Initial Description");
@@ -89,7 +86,6 @@ class TodoServiceImplTest {
         assertThat(result.getTitle()).isEqualTo("New Title");
         assertThat(result.getDescription()).isEqualTo("New Description");
 
-        // DB에 추가된 Todo가 있는지 확인
         List<Todo> todos = todoRepository.findAllByMemberId(testMember.getId());
         assertThat(todos).hasSize(2); // 기존 1개 + 새로 추가된 1개
     }
@@ -106,7 +102,6 @@ class TodoServiceImplTest {
         assertThat(result.getTitle()).isEqualTo("Updated Title");
         assertThat(result.getDescription()).isEqualTo("Updated Description");
 
-        // 실제 DB에서 확인
         Todo updatedTodoFromDb = todoRepository.findByIdAndMemberId(testTodo.getId(), testMember.getId());
         assertThat(updatedTodoFromDb.getTitle()).isEqualTo("Updated Title");
     }
@@ -122,7 +117,6 @@ class TodoServiceImplTest {
         // then
         assertThat(result.getStatus()).isEqualTo(newStatus);
 
-        // 실제 DB에서 확인
         Todo updatedTodoFromDb = todoRepository.findByIdAndMemberId(testTodo.getId(), testMember.getId());
         assertThat(updatedTodoFromDb.getStatus()).isEqualTo(newStatus);
     }
@@ -135,7 +129,6 @@ class TodoServiceImplTest {
         // then
         assertThat(result.getTitle()).isEqualTo(testTodo.getTitle());
 
-        // 실제 DB에서 삭제되었는지 확인
         Optional<Todo> deletedTodo = todoRepository.findById(testTodo.getId());
         assertThat(deletedTodo).isEmpty();
     }

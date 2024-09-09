@@ -1,6 +1,5 @@
 package com.clush.test.domain.todo.controller;
 
-import com.clush.test.domain.todo.controller.TodoController;
 import com.clush.test.domain.todo.entity.TodoDto;
 import com.clush.test.domain.todo.entity.TodoResponse;
 import com.clush.test.domain.todo.entity.TodoStatus;
@@ -51,7 +50,7 @@ class TodoControllerTest {
         // given
         when(todoService.getAllTodos(anyLong())).thenReturn(testTodoResponse);
 
-        // when & then
+        // then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/todos")
                         .sessionAttr("memberId", testMemberId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -64,7 +63,7 @@ class TodoControllerTest {
         // given
         when(todoService.getTodoById(anyLong(), anyLong())).thenReturn(testTodoDto);
 
-        // when & then
+        // then
         mockMvc.perform(MockMvcRequestBuilders.get("/api/todos/{todoId}", 1L)
                         .sessionAttr("memberId", testMemberId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -77,7 +76,7 @@ class TodoControllerTest {
         // given
         when(todoService.addTodo(any(), anyLong())).thenReturn(testTodoDto);
 
-        // when & then
+        // then
         mockMvc.perform(MockMvcRequestBuilders.post("/api/todos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testTodoDto))
@@ -92,7 +91,7 @@ class TodoControllerTest {
         // given
         when(todoService.updateTodo(anyLong(), any(), anyLong())).thenReturn(testTodoDto);
 
-        // when & then
+        // then
         mockMvc.perform(MockMvcRequestBuilders.put("/api/todos/{todoId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testTodoDto))
@@ -105,15 +104,15 @@ class TodoControllerTest {
     @Test
     void updateTodoStatus() throws Exception {
         // given
-        TodoDto testTodoDto = new TodoDto(); // TodoDto 객체를 초기화합니다.
+        TodoDto testTodoDto = new TodoDto();
         testTodoDto.setId(1L);
-        testTodoDto.setStatus(TodoStatus.COMPLETED); // 상태를 COMPLETED로 설정합니다.
+        testTodoDto.setStatus(TodoStatus.COMPLETED);
         when(todoService.updateTodoStatus(anyLong(), any(), anyLong())).thenReturn(testTodoDto);
 
-        // when & then
+        // then
         mockMvc.perform(MockMvcRequestBuilders.put("/api/todos/{todoId}/status", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("\"" + TodoStatus.COMPLETED.name() + "\"") // JSON 요청 본문 설정
+                        .content("\"" + TodoStatus.COMPLETED.name() + "\"")
                         .sessionAttr("memberId", testMemberId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(testTodoDto.getId()))
@@ -125,7 +124,7 @@ class TodoControllerTest {
         // given
         when(todoService.deleteTodo(anyLong(), anyLong())).thenReturn(testTodoDto);
 
-        // when & then
+        // then
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/todos/{todoId}", 1L)
                         .sessionAttr("memberId", testMemberId))
                 .andExpect(MockMvcResultMatchers.status().isOk())

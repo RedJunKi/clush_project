@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.clush.test.domain.member.controller.MemberController;
 import com.clush.test.domain.member.entity.Member;
 import com.clush.test.domain.member.entity.MemberLoginDto;
 import com.clush.test.domain.member.entity.MemberPostDto;

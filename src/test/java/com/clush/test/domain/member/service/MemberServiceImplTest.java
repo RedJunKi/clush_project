@@ -7,7 +7,6 @@ import com.clush.test.domain.member.entity.Member;
 import com.clush.test.domain.member.entity.MemberLoginDto;
 import com.clush.test.domain.member.entity.MemberPostDto;
 import com.clush.test.domain.member.repository.MemberRepository;
-import com.clush.test.domain.member.service.MemberServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -56,7 +55,7 @@ class MemberServiceImplTest {
         // given
         MemberPostDto memberPostDto = new MemberPostDto("testmember@example.com", "password", "TestMember");
 
-        // when & then
+        // then
         assertThatThrownBy(() -> memberService.save(memberPostDto))
                 .isInstanceOf(BusinessLogicException.class)
                 .hasMessage(ExceptionCode.MEMBER_DUPLICATE.getMessage());
@@ -80,7 +79,7 @@ class MemberServiceImplTest {
         // given
         MemberLoginDto memberLoginDto = new MemberLoginDto("testmember@example.com", "wrongpassword");
 
-        // when & then
+        // then
         assertThatThrownBy(() -> memberService.login(memberLoginDto))
                 .isInstanceOf(BusinessLogicException.class)
                 .hasMessage(ExceptionCode.MEMBER_NOT_FOUND.getMessage());
@@ -105,7 +104,7 @@ class MemberServiceImplTest {
         // given
         Long nonExistentMemberId = 999L;
 
-        // when & then
+        // then
         assertThatThrownBy(() -> memberService.delete(nonExistentMemberId))
                 .isInstanceOf(BusinessLogicException.class)
                 .hasMessage(ExceptionCode.MEMBER_NOT_FOUND.getMessage());

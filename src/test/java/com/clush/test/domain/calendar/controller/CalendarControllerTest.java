@@ -1,9 +1,6 @@
 package com.clush.test.domain.calendar.controller;
 
-import com.clush.test.domain.calendar.controller.CalendarController;
-
-import com.clush.test.domain.calendar.entity.CalendarEventDto;
-import com.clush.test.domain.calendar.entity.CalendarEventResponse;
+import com.clush.test.domain.calendar.entity.*;
 import com.clush.test.domain.calendar.service.CalendarService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +37,8 @@ class CalendarControllerTest {
     private Long testMemberId = 1L;
     private CalendarEventDto testEventDto;
     private CalendarEventResponse testEventResponse;
+    private SharedCalendarEvent sharedCalendarEvent;
+    private SharedCalendarEventResponse sharedCalendarEventResponse;
 
     @BeforeEach
     void setUp() {
@@ -54,7 +53,7 @@ class CalendarControllerTest {
         // given
         when(calendarService.getAllEventsBetween(any(), any(), anyLong())).thenReturn(testEventResponse);
 
-        // when & then
+        // then
         mockMvc.perform(get("/api/calendars")
                         .param("start", "2024-09-01T00:00:00")
                         .param("end", "2024-09-30T23:59:59")
@@ -69,7 +68,7 @@ class CalendarControllerTest {
         // given
         when(calendarService.getEventById(anyLong(), anyLong())).thenReturn(testEventDto);
 
-        // when & then
+        // then
         mockMvc.perform(get("/api/calendars/{eventId}", 1L)
                         .sessionAttr("memberId", testMemberId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -82,7 +81,7 @@ class CalendarControllerTest {
         // given
         when(calendarService.addEvent(any(), anyLong())).thenReturn(testEventDto);
 
-        // when & then
+        // then
         mockMvc.perform(post("/api/calendars")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testEventDto))
@@ -97,7 +96,7 @@ class CalendarControllerTest {
         // given
         when(calendarService.updateEvent(anyLong(), any(), anyLong())).thenReturn(testEventDto);
 
-        // when & then
+        // then
         mockMvc.perform(put("/api/calendars/{eventId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testEventDto))
@@ -112,11 +111,35 @@ class CalendarControllerTest {
         // given
         when(calendarService.deleteEvent(anyLong(), anyLong())).thenReturn(testEventDto);
 
-        // when & then
+        // then
         mockMvc.perform(delete("/api/calendars/{eventId}", 1L)
                         .sessionAttr("memberId", testMemberId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(testEventDto.getTitle()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(testEventDto.getDescription()));
+    }
+
+    @Test
+    void shareEvent() throws Exception {
+        // given
+        when(calendarService.shareEvent(anyLong(), anyLong(), anyLong())).thenReturn(sharedCalendarEventResponse);
+
+        // then
+        mockMvc.perform(post("/api/calendars/{eventId}/share", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testEventDto))
+                        .sessionAttr("memberId", testMemberId))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void getAllSharedEvents() throws Exception {
+        // given
+        when(calendarService.getAllSharedEvents(anyLong())).thenReturn(testEventResponse);
+
+        // then
+        mockMvc.perform(get("/api/calendars/shared", 1L)
+                        .sessionAttr("memberId", testMemberId))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

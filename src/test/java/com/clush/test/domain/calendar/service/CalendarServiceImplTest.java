@@ -3,8 +3,9 @@ package com.clush.test.domain.calendar.service;
 import com.clush.test.domain.calendar.entity.CalendarEvent;
 import com.clush.test.domain.calendar.entity.CalendarEventDto;
 import com.clush.test.domain.calendar.entity.CalendarEventResponse;
+import com.clush.test.domain.calendar.entity.SharedCalendarEvent;
 import com.clush.test.domain.calendar.repository.CalendarRepository;
-import com.clush.test.domain.calendar.service.CalendarServiceImpl;
+import com.clush.test.domain.calendar.repository.SharedCalenderEventRepository;
 import com.clush.test.domain.member.entity.Member;
 import com.clush.test.domain.member.repository.MemberRepository;
 
@@ -33,23 +34,26 @@ class CalendarServiceImplTest {
     private CalendarRepository calendarRepository;
 
     @Autowired
+    private SharedCalenderEventRepository sharedCalenderEventRepository;
+
+    @Autowired
     private MemberRepository memberRepository;
 
     private Member testMember;
     private CalendarEvent savedCalendarEvent;
+    private SharedCalendarEvent sharedCalendarEvent;
 
     @BeforeEach
     void setUp() {
-        // 회원 생성 및 저장
         testMember = new Member();
         testMember.setEmail("testmember@example.com");
         testMember.setUsername("TestMember");
         testMember.setPassword("password");
         memberRepository.save(testMember);
 
-        // CalendarEvent 생성 및 저장
         savedCalendarEvent = new CalendarEvent("제목", "내용", LocalDateTime.of(2024, 9, 3, 0, 0, 0), LocalDateTime.of(2024, 9, 10, 23, 59, 59), testMember);
         calendarRepository.save(savedCalendarEvent);
+
     }
 
     @Test
@@ -88,7 +92,6 @@ class CalendarServiceImplTest {
         assertThat(result.getTitle()).isEqualTo(newEventDto.getTitle());
         assertThat(result.getEndDate()).isEqualTo(newEventDto.getEndDate());
 
-        // DB에서 새로 추가된 이벤트가 있는지 확인
         List<CalendarEvent> events = calendarRepository.findAllByStartDateBetweenAndMemberId(newEventDto.getStartDate(), newEventDto.getEndDate(), testMember.getId());
         assertThat(events).hasSize(1);
     }
@@ -105,7 +108,6 @@ class CalendarServiceImplTest {
         assertThat(result.getTitle()).isEqualTo(updatedEventDto.getTitle());
         assertThat(result.getStartDate()).isEqualTo(updatedEventDto.getStartDate());
 
-        // 실제 DB에서 업데이트된 이벤트 확인
         CalendarEventDto updatedEventFromDb = calendarService.getEventById(savedCalendarEvent.getId(), testMember.getId());
         assertThat(updatedEventFromDb.getTitle()).isEqualTo(updatedEventDto.getTitle());
         assertThat(updatedEventFromDb.getDescription()).isEqualTo(updatedEventDto.getDescription());
@@ -127,7 +129,7 @@ class CalendarServiceImplTest {
     }
 
     @Test
-    public void findByEndDate() {
+    void findByEndDate() {
         // given
         LocalDateTime birthDay = LocalDateTime.of(1995,4,14,0,0,0);
         CalendarEvent event = new CalendarEvent();
@@ -144,5 +146,37 @@ class CalendarServiceImplTest {
         // then
         assertThat(events.isEmpty()).isFalse();
         assertThat("생일").isEqualTo(events.get(0).getTitle());
+    }
+
+    @Test
+    void shareEvent() {
+        // given
+        SharedCalendarEvent result = new SharedCalendarEvent();
+        result.setCalendarEvent(savedCalendarEvent);
+        result.setMember(testMember);
+
+        // when
+        SharedCalendarEvent save = sharedCalenderEventRepository.save(result);
+
+        // then
+        assertThat(save.getCalendarEvent()).isEqualTo(savedCalendarEvent);
+        assertThat(save.getMember()).isEqualTo(testMember);
+    }
+
+    @Test
+    void getAllSharedEvents() {
+        // given
+        SharedCalendarEvent result = new SharedCalendarEvent();
+        result.setCalendarEvent(savedCalendarEvent);
+        result.setMember(testMember);
+
+        // when
+        sharedCalenderEventRepository.save(result);
+        List<SharedCalendarEvent> events = sharedCalenderEventRepository.findByMemberId(testMember.getId());
+
+        // then
+        assertThat(events.size()).isEqualTo(1);
+        assertThat(events.get(0).getCalendarEvent()).isEqualTo(savedCalendarEvent);
+
     }
 }

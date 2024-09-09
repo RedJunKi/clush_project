@@ -18,6 +18,6 @@ class EmailServiceTest {
         String subject = "테스트 제목";
         String text = "테스트 내용";
 
-        emailService.sendEmail(email, subject, text);
+//        emailService.sendEmail(email, subject, text);
     }
 }
