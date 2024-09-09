@@ -98,3 +98,6 @@ C:.
 <h4>http://localhost:8080/swagger-ui/index.html</h4>
 [swaggerAPI.pdf](https://github.com/user-attachments/files/16907175/swaggerAPI.pdf)
 
+
+<img alt="todo" src="https://github.com/user-attachments/assets/725b5458-749a-4c5e-b3a6-1db49bce19da" width="1000" height="600">
+<img alt="calendar" src="https://github.com/user-attachments/assets/ed058499-99de-486f-917f-71a6b9c3e4ca" width="1000" height="600">
