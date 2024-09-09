@@ -2,6 +2,8 @@ package com.clush.test.domain.calendar.controller;
 
 import com.clush.test.domain.calendar.entity.CalendarEventDto;
 import com.clush.test.domain.calendar.entity.CalendarEventResponse;
+import com.clush.test.domain.calendar.entity.ShareEventDto;
+import com.clush.test.domain.calendar.entity.SharedCalendarEventResponse;
 import com.clush.test.domain.calendar.service.CalendarService;
 import com.clush.test.domain.calendar.util.CalendarUtil;
 import com.clush.test.global.annotation.CheckSession;
@@ -81,6 +83,28 @@ public class CalendarController {
 
         CalendarEventDto event = calendarService.deleteEvent(eventId, memberId);
         return ResponseEntity.ok(event);
+    }
+
+    @PostMapping("/{eventId}/share")
+    @Operation(summary = "일정 공유", description = "일정을 다른 멤버와 공유하기")
+    @CheckSession
+    public ResponseEntity<SharedCalendarEventResponse> shareEvent(@PathVariable Long eventId,
+                                                             @RequestBody ShareEventDto shareEventDto,
+                                                             HttpSession session) {
+        Long memberId = (Long) session.getAttribute("memberId");
+
+        SharedCalendarEventResponse sharedEvent = calendarService.shareEvent(eventId, memberId, shareEventDto.getMemberId());
+        return ResponseEntity.ok(sharedEvent);
+    }
+
+    @GetMapping("/shared")
+    @Operation(summary = "공유된 일정 조회", description = "사용자가 받은 모든 공유된 일정을 조회하기")
+    @CheckSession
+    public ResponseEntity<CalendarEventResponse> getAllSharedEvents(HttpSession session) {
+        Long memberId = (Long) session.getAttribute("memberId");
+
+        CalendarEventResponse events = calendarService.getAllSharedEvents(memberId);
+        return ResponseEntity.ok(events);
     }
 }
 

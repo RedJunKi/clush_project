@@ -2,6 +2,7 @@ package com.clush.test.domain.calendar.service;
 
 import com.clush.test.domain.calendar.entity.CalendarEventDto;
 import com.clush.test.domain.calendar.entity.CalendarEventResponse;
+import com.clush.test.domain.calendar.entity.SharedCalendarEventResponse;
 
 import java.time.LocalDateTime;
 
@@ -15,4 +16,8 @@ public interface CalendarService {
     CalendarEventDto updateEvent(Long eventId, CalendarEventDto eventDto, Long memberId);
 
     CalendarEventDto deleteEvent(Long eventId, Long memberId);
+
+    SharedCalendarEventResponse shareEvent(Long eventId, Long memberId, Long shareMemberId);
+
+    CalendarEventResponse getAllSharedEvents(Long memberId);
 }

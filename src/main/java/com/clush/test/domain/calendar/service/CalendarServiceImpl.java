@@ -1,9 +1,8 @@
 package com.clush.test.domain.calendar.service;
 
-import com.clush.test.domain.calendar.entity.CalendarEvent;
-import com.clush.test.domain.calendar.entity.CalendarEventDto;
-import com.clush.test.domain.calendar.entity.CalendarEventResponse;
+import com.clush.test.domain.calendar.entity.*;
 import com.clush.test.domain.calendar.repository.CalendarRepository;
+import com.clush.test.domain.calendar.repository.SharedCalenderEventRepository;
 import com.clush.test.global.exception.BusinessLogicException;
 import com.clush.test.global.exception.ExceptionCode;
 import com.clush.test.domain.member.entity.Member;
@@ -14,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -22,6 +22,7 @@ public class CalendarServiceImpl implements CalendarService {
 
     private final CalendarRepository calendarRepository;
     private final MemberRepository memberRepository;
+    private final SharedCalenderEventRepository sharedCalenderEventRepository;
 
     @Override
     public CalendarEventResponse getAllEventsBetween(LocalDateTime start, LocalDateTime end, Long memberId) {
@@ -71,6 +72,36 @@ public class CalendarServiceImpl implements CalendarService {
         calendarRepository.delete(findOne);
 
         return findOne.entityToDto();
+    }
+
+    @Override
+    public SharedCalendarEventResponse shareEvent(Long eventId, Long memberId, Long shareMemberId) {
+        CalendarEvent event = findById(eventId, memberId);
+        Member shareMember = findMemberById(shareMemberId);
+
+        SharedCalendarEvent result = new SharedCalendarEvent();
+        result.setCalendarEvent(event);
+        result.setMember(shareMember);
+        sharedCalenderEventRepository.save(result);
+
+        return new SharedCalendarEventResponse(result);
+    }
+
+    @Override
+    public CalendarEventResponse getAllSharedEvents(Long memberId) {
+        List<SharedCalendarEvent> sharedEvents = sharedCalenderEventRepository.findByMemberId(memberId);
+
+        System.out.println(sharedEvents.size());
+
+        List<CalendarEventDto> result = sharedEvents.stream()
+                .map(sharedEvent -> sharedEvent.getCalendarEvent().entityToDto())
+                .toList();
+
+        return new CalendarEventResponse(result);
+    }
+
+    private Member findMemberById(Long memberId) {
+        return memberRepository.findById(memberId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
     private CalendarEvent findById(Long eventId, Long memberId) {
