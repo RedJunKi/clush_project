@@ -11,11 +11,10 @@ public class MemberPostDto {
     public MemberPostDto() {
     }
 
-    public MemberPostDto(Long id, String email, String username, String password) {
+    public MemberPostDto(Long id, String email, String username) {
         this.id = id;
         this.email = email;
         this.username = username;
-        this.password = password;
     }
 
     public MemberPostDto(String email, String username, String password) {

@@ -18,7 +18,6 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEMBER_ID")
     private long id;
-
     private String email;
     private String password;
     private String username;
@@ -42,7 +41,7 @@ public class Member extends BaseEntity {
     }
 
     public MemberPostDto entityToDto() {
-        return new MemberPostDto(this.id, this.email, this.username, this.password);
+        return new MemberPostDto(this.id, this.email, this.username);
     }
 
     public long getId() {
@@ -59,7 +58,6 @@ public class Member extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
-
     }
 
     public void addTodo(Todo todo) {
@@ -92,14 +90,6 @@ public class Member extends BaseEntity {
 
     public String getUsername() {
         return username;
-    }
-
-    public List<CalendarEvent> getCalendarEvents() {
-        return calendarEvents;
-    }
-
-    public void setCalendarEvents(List<CalendarEvent> calendarEvents) {
-        this.calendarEvents = calendarEvents;
     }
 
     public List<Todo> getTodos() {

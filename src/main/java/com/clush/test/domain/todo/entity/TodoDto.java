@@ -58,7 +58,6 @@ public class TodoDto {
         return status;
     }
 
-
     public void setStatus(TodoStatus status) {
         this.status = status;
     }

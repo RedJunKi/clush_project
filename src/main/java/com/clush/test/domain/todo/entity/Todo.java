@@ -13,13 +13,10 @@ public class Todo extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TODO_ID")
     private Long id;
-
     private String title;
     private String description;
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Member member;
-
     @Enumerated(EnumType.STRING)
     private TodoStatus status;
 
