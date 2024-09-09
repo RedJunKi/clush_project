@@ -23,6 +23,7 @@ public class CalendarServiceImpl implements CalendarService {
     private final CalendarRepository calendarRepository;
     private final MemberRepository memberRepository;
     private final SharedCalenderEventRepository sharedCalenderEventRepository;
+    private final EmailService emailService;
 
     @Override
     public CalendarEventResponse getAllEventsBetween(LocalDateTime start, LocalDateTime end, Long memberId) {
@@ -84,7 +85,16 @@ public class CalendarServiceImpl implements CalendarService {
         result.setMember(shareMember);
         sharedCalenderEventRepository.save(result);
 
+        sendShareAlert(shareMember.getEmail(), event);
+
         return new SharedCalendarEventResponse(result);
+    }
+
+    private void sendShareAlert(String email, CalendarEvent event) {
+        String subject = event.getMember().getUsername() + "님이 " + event.getTitle() + " 일정을 공유했습니다.";
+        String text = event.getDescription();
+
+        emailService.sendEmail(email, subject, text);
     }
 
     @Override
