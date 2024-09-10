@@ -2,8 +2,6 @@ package com.clush.test.domain.member.entity;
 
 
 public class MemberPostDto {
-
-    private Long id;
     private String email;
     private String username;
     private String password;
@@ -11,8 +9,7 @@ public class MemberPostDto {
     public MemberPostDto() {
     }
 
-    public MemberPostDto(Long id, String email, String username) {
-        this.id = id;
+    public MemberPostDto(String email, String username) {
         this.email = email;
         this.username = username;
     }

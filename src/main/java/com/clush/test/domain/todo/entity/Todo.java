@@ -63,7 +63,6 @@ public class Todo extends BaseEntity {
 
     public TodoDto entityToDto() {
         return TodoDto.builder()
-                .id(this.id)
                 .title(this.title)
                 .description(this.description)
                 .status(this.status)

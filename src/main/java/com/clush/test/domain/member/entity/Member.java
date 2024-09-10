@@ -43,7 +43,7 @@ public class Member extends BaseEntity {
     }
 
     public MemberPostDto entityToDto() {
-        return new MemberPostDto(this.id, this.email, this.username);
+        return new MemberPostDto(this.email, this.username);
     }
 
     public long getId() {

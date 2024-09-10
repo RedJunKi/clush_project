@@ -41,7 +41,7 @@ class TodoControllerTest {
 
     @BeforeEach
     void setUp() {
-        testTodoDto = new TodoDto(1L, "Test Todo", "Test Description", TodoStatus.PENDING);
+        testTodoDto = new TodoDto("Test Todo", "Test Description", TodoStatus.PENDING);
         testTodoResponse = new TodoResponse(List.of(testTodoDto));
     }
 
@@ -54,7 +54,6 @@ class TodoControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/todos")
                         .sessionAttr("memberId", testMemberId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.todos[0].id").value(testTodoDto.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.todos[0].title").value(testTodoDto.getTitle()));
     }
 
@@ -67,7 +66,6 @@ class TodoControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/todos/{todoId}", 1L)
                         .sessionAttr("memberId", testMemberId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(testTodoDto.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(testTodoDto.getTitle()));
     }
 
@@ -82,7 +80,6 @@ class TodoControllerTest {
                         .content(objectMapper.writeValueAsString(testTodoDto))
                         .sessionAttr("memberId", testMemberId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(testTodoDto.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(testTodoDto.getTitle()));
     }
 
@@ -97,7 +94,6 @@ class TodoControllerTest {
                         .content(objectMapper.writeValueAsString(testTodoDto))
                         .sessionAttr("memberId", testMemberId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(testTodoDto.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(testTodoDto.getTitle()));
     }
 
@@ -105,7 +101,6 @@ class TodoControllerTest {
     void updateTodoStatus() throws Exception {
         // given
         TodoDto testTodoDto = new TodoDto();
-        testTodoDto.setId(1L);
         testTodoDto.setStatus(TodoStatus.COMPLETED);
         when(todoService.updateTodoStatus(anyLong(), any(), anyLong())).thenReturn(testTodoDto);
 
@@ -115,7 +110,6 @@ class TodoControllerTest {
                         .content("\"" + TodoStatus.COMPLETED.name() + "\"")
                         .sessionAttr("memberId", testMemberId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(testTodoDto.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(TodoStatus.COMPLETED.name())); // 기대하는 값으로 검증
     }
 
@@ -128,7 +122,7 @@ class TodoControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/todos/{todoId}", 1L)
                         .sessionAttr("memberId", testMemberId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(testTodoDto.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(testTodoDto.getTitle()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(testTodoDto.getTitle()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(testTodoDto.getDescription()));
     }
 }

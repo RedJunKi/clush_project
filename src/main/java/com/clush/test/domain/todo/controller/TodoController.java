@@ -44,7 +44,7 @@ public class TodoController {
     }
 
     @PostMapping
-    @Operation(summary = "Todo 저장", description = "Todo 저장하기")
+    @Operation(summary = "Todo 저장 (status = PENDING, IN_PROGRESS, COMPLETED, DONE)", description = "Todo 저장하기 (status = PENDING, IN_PROGRESS, COMPLETED, DONE)")
     @CheckSession
     public ResponseEntity<TodoDto> addTodo(@RequestBody TodoDto todoDto, HttpSession session) {
         Long memberId = (Long) session.getAttribute("memberId");
