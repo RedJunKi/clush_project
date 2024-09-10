@@ -15,7 +15,7 @@ public class Todo extends BaseEntity {
     private Long id;
     private String title;
     private String description;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
     @Enumerated(EnumType.STRING)
     private TodoStatus status;

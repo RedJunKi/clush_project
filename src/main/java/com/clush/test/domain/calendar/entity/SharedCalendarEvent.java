@@ -9,7 +9,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class SharedCalendarEvent {
@@ -24,4 +23,14 @@ public class SharedCalendarEvent {
 
     @ManyToOne
     private Member member;
+
+    public void setCalendarEvent(CalendarEvent calendarEvent) {
+        calendarEvent.getSharedCalendarEvents().add(this);
+        this.calendarEvent = calendarEvent;
+    }
+
+    public void setMember(Member member) {
+        member.getSharedCalendarEvents().add(this);
+        this.member = member;
+    }
 }

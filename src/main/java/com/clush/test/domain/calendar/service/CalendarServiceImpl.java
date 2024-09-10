@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -116,7 +115,7 @@ public class CalendarServiceImpl implements CalendarService {
 
     private CalendarEvent findById(Long eventId, Long memberId) {
         return calendarRepository.findByIdAndMemberId(eventId, memberId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 아이디를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.INFORMATION_NOT_FOUND));
     }
 
     private static void makeEventEntity(CalendarEventDto eventDto, CalendarEvent calendarEvent) {

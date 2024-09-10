@@ -98,7 +98,7 @@ public class CalendarController {
     }
 
     @GetMapping("/shared")
-    @Operation(summary = "공유된 일정 조회", description = "사용자가 받은 모든 공유된 일정을 조회하기")
+    @Operation(summary = "공유받은 일정 조회", description = "사용자가 받은 모든 공유된 일정을 조회하기")
     @CheckSession
     public ResponseEntity<CalendarEventResponse> getAllSharedEvents(HttpSession session) {
         Long memberId = (Long) session.getAttribute("memberId");

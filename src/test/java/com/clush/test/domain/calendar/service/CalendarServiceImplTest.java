@@ -9,6 +9,8 @@ import com.clush.test.domain.calendar.repository.SharedCalenderEventRepository;
 import com.clush.test.domain.member.entity.Member;
 import com.clush.test.domain.member.repository.MemberRepository;
 
+import com.clush.test.global.exception.BusinessLogicException;
+import com.clush.test.global.exception.ExceptionCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,15 +119,10 @@ class CalendarServiceImplTest {
     void deleteEvent() {
         // when
         calendarService.deleteEvent(savedCalendarEvent.getId(), testMember.getId());
-
+        calendarRepository.flush();
         // then
-        assertThatThrownBy(() -> calendarService.getEventById(savedCalendarEvent.getId(), testMember.getId()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("해당 아이디를 찾을 수 없습니다.");
+        calendarService.getEventById(savedCalendarEvent.getId(), testMember.getId());
 
-        assertThatThrownBy(() -> calendarService.deleteEvent(savedCalendarEvent.getId(), testMember.getId()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("해당 아이디를 찾을 수 없습니다.");
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.clush.test.domain.member.entity;
 
 import com.clush.test.domain.calendar.entity.CalendarEvent;
+import com.clush.test.domain.calendar.entity.SharedCalendarEvent;
 import com.clush.test.domain.common.BaseEntity;
 import com.clush.test.domain.todo.entity.Todo;
 import jakarta.persistence.*;
@@ -25,7 +26,8 @@ public class Member extends BaseEntity {
     private List<CalendarEvent> calendarEvents = new ArrayList<>();
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Todo> todos = new ArrayList<>();
-
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<SharedCalendarEvent> sharedCalendarEvents = new ArrayList<>();
 
     public Member(String email, String password, String username) {
         this.email = email;
@@ -54,6 +56,10 @@ public class Member extends BaseEntity {
 
     public String getPassword() {
         return password;
+    }
+
+    public List<SharedCalendarEvent> getSharedCalendarEvents() {
+        return sharedCalendarEvents;
     }
 
     public void setEmail(String email) {

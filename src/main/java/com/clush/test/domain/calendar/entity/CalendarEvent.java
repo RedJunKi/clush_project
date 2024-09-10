@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,13 +24,16 @@ public class CalendarEvent extends BaseEntity {
     private String title;
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
     @Column(name = "START_DATE")
     private LocalDateTime startDate;
     @Column(name = "END_DATE")
     private LocalDateTime endDate;
+
+    @OneToMany(mappedBy = "calendarEvent", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<SharedCalendarEvent> sharedCalendarEvents = new ArrayList<>();
 
     public CalendarEvent(String title, String description, LocalDateTime startDate, LocalDateTime endDate, Member member) {
         this.title = title;
